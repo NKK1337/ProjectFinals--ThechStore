@@ -10,7 +10,65 @@
 </head>
 
 <body>
-
+    <header>
+        <nav>
+            <a href="./index.html" class="site-name flex">
+                <div class="icon-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                </div>
+                <span>STEP TECH</span>
+            </a>
+            <div class="nav-list" id="navList">
+                <ul>
+                    <li id="navHoverHome"><a href="#">Home</a></li>
+                    <li id="navHoverShop"><a href="#">Shop</a></li>
+                    <li class="has-dropdown">
+                        <span class="dropdown-toggle">
+                            Categories
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </span>
+                        <ul class="dropdown-menu" id="categoriesDropdown">
+                            <li class="dropdown-loading">Loading...</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="serch-bar">
+                <input type="text" placeholder="Search products..." id="searchInput">
+                <svg id="clearBtn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+            <div class="sign-in-btn">
+                <button>Sign In</button>
+            </div>
+            <div class="menu-overlay" id="menuOverlay"></div>
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
+                <svg class="icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </nav>
+    </header>
+    <script src="./main.js"></script>
 </body>
 
 </html>
