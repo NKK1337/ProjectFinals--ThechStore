@@ -62,46 +62,48 @@ if (currentPage === 'index.html') {
     navHoverShop.classList.add('active');
 }
 
-// burger menu 
-const hamburgerBtn = document.getElementById('hamburgerBtn');
-const navList = document.getElementById('navList');
-const menuOverlay = document.getElementById('menuOverlay');
+// categoris for side page
+const categoryCards = document.getElementById('category-cards');
 
-function closeMenu() {
-    navList.classList.remove('open');
-    hamburgerBtn.classList.remove('active');
-    menuOverlay.classList.remove('open');
-    document.body.classList.remove('menu-open');
-}
+async function loadCategoryCards() {
+    if (!categoryCards) return;
 
-function openMenu() {
-    navList.classList.add('open');
-    hamburgerBtn.classList.add('active');
-    menuOverlay.classList.add('open');
-    document.body.classList.add('menu-open');
-}
-
-hamburgerBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (navList.classList.contains('open')) {
-        closeMenu();
-    } else {
-        openMenu();
-    }
-});
-
-menuOverlay.addEventListener('click', closeMenu);
-
-document.querySelectorAll('.nav-list a').forEach(link => {
-    link.addEventListener('click', () => {
-        if (window.innerWidth <= 781) {
-            closeMenu();
+    try {
+        const response = await fetch(`${BASE_URL}/api/categories`, {
+            method: 'GET',
+            headers: {
+                'X-API-KEY': API_KEY,
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) throw new Error('Request failed');
+        const result = await response.json();
+        const categories = (result.data || []).slice(0, 4);
+        if (categories.length === 0) {
+            categoryCards.innerHTML = '<p>No categories found</p>'
+            return;
         }
-    });
-});
-
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 781) {
-        closeMenu();
+        categoryCards.innerHTML = categories.map(category => `
+            <a href="#" class="category-card" data-category-id="${category.id}">
+                <div class="category-card-img">
+                    <img src="${category.imageUrl || category.image || ''}" alt="${category.name}">
+                </div>
+                <div class="category-card-info">
+                    <span class="category-card-name">${category.name}</span>
+                    <span class="category-card-count">${category.productCount} products</span>
+                </div>
+                <svg class="category-card-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        `).join('');
     }
-});
+    catch (err) {
+        categoryCards.innerHTML = '<p>Failed to load categories</p>'
+        console.error('Category cards fetch error:', err);
+    }
+}
+
+loadCategoryCards();
