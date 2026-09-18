@@ -4,8 +4,8 @@ body {
 }
 
 header {
-    border-bottom: 1px solid #eee;
-    padding: 15px 40px;
+    border-bottom: 0.0625rem solid #eee;
+    padding: 0.9375rem 2.5rem;
     position: relative;
 }
 
@@ -13,13 +13,13 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 30px;
+    gap: 1.875rem;
 }
 
 .site-name {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
@@ -27,8 +27,8 @@ nav {
 
 .icon-box {
     background-color: #22c55e;
-    padding: 8px;
-    border-radius: 8px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,21 +36,21 @@ nav {
 
 .icon-box svg {
     color: #fff;
-    width: 20px;
-    height: 20px;
+    width: 1.25rem;
+    height: 1.25rem;
 }
 
 .site-name span {
     font-weight: 700;
-    font-size: 18px;
-    letter-spacing: 1px;
+    font-size: 1.125rem;
+    letter-spacing: 0.0625rem;
     color: #111;
 }
 
 .nav-list ul {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -65,11 +65,11 @@ nav {
     cursor: pointer;
     font-weight: 500;
     color: #222;
-    padding: 8px 16px;
-    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.3125rem;
     transition: all 0.2s ease;
     font-weight: bolder;
     text-decoration: none;
@@ -91,13 +91,13 @@ nav {
     top: 100%;
     left: 0;
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-    min-width: 220px;
-    padding: 8px;
+    border-radius: 0.625rem;
+    box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.12);
+    min-width: 13.75rem;
+    padding: 0.5rem;
     display: none;
     flex-direction: column;
-    gap: 2px;
+    gap: 0.125rem;
     z-index: 100;
 }
 
@@ -109,15 +109,15 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 12px;
-    border-radius: 6px;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.375rem;
     color: #333;
     font-weight: 400;
 }
 
 .has-dropdown .dropdown-menu li a {
     font-weight: 400;
-    font-size: 13px;
+    font-size: 0.8125rem;
 }
 
 .dropdown-menu li a:hover {
@@ -128,23 +128,23 @@ nav {
 .dropdown-menu .count {
     background-color: #eee;
     color: #555;
-    font-size: 12px;
-    padding: 2px 8px;
-    border-radius: 20px;
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 1.25rem;
 }
 
 .dropdown-loading,
 .dropdown-empty,
 .dropdown-error {
-    padding: 10px 12px;
-    font-size: 13px;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.8125rem;
     color: #999;
     text-align: center;
 }
 
 .serch-bar {
     flex: 1;
-    max-width: 400px;
+    max-width: 25rem;
     position: relative;
     display: flex;
     align-items: center;
@@ -152,12 +152,12 @@ nav {
 
 .serch-bar input {
     width: 100%;
-    padding: 10px 40px 10px 16px;
-    border-radius: 20px;
-    border: 1px solid #eee;
+    padding: 0.625rem 2.5rem 0.625rem 1rem;
+    border-radius: 1.25rem;
+    border: 0.0625rem solid #eee;
     background-color: #f9f9f9;
     outline: none;
-    font-size: 14px;
+    font-size: 0.875rem;
     transition: all 0.2s ease;
 }
 
@@ -168,12 +168,12 @@ nav {
 .serch-bar input:focus {
     border-color: #22c55e;
     background-color: #fff;
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+    box-shadow: 0 0 0 0.1875rem rgba(34, 197, 94, 0.15);
 }
 
 .serch-bar #clearBtn {
     position: absolute;
-    right: 14px;
+    right: 0.875rem;
     color: #999;
     cursor: pointer;
     display: none;
@@ -187,11 +187,11 @@ nav {
     background-color: #22c55e;
     color: #fff;
     border: none;
-    padding: 10px 24px;
-    border-radius: 20px;
+    padding: 0.625rem 1.5rem;
+    border-radius: 1.25rem;
     font-weight: 600;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .sign-in-btn button:hover {
@@ -204,7 +204,7 @@ nav {
     border: none;
     cursor: pointer;
     color: #222;
-    padding: 6px;
+    padding: 0.375rem;
     align-items: center;
     justify-content: center;
 }
@@ -222,13 +222,13 @@ nav {
 }
 
 
-@media (max-width: 781px) {
+@media (max-width: 48.8125rem) {
     nav {
-        gap: 15px;
+        gap: 0.9375rem;
     }
 
     header {
-        padding: 15px 20px;
+        padding: 0.9375rem 1.25rem;
     }
 
     body.menu-open {
@@ -238,16 +238,16 @@ nav {
     .nav-list {
         display: block;
         position: fixed;
-        top: 66px;
+        top: 4.125rem;
         right: 0;
         bottom: 0;
-        width: 280px;
+        width: 17.5rem;
         max-width: 80%;
         background: #fff;
         z-index: 200;
-        padding: 20px;
+        padding: 1.25rem;
         overflow-y: auto;
-        box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+        box-shadow: -0.25rem 0 1.25rem rgba(0, 0, 0, 0.1);
         transform: translateX(100%);
         transition: transform 0.3s ease;
     }
@@ -259,7 +259,7 @@ nav {
     .nav-list ul {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
+        gap: 0.25rem;
         width: 100%;
     }
 
@@ -271,8 +271,8 @@ nav {
     .nav-list ul li>.dropdown-toggle {
         width: 100%;
         justify-content: space-between;
-        padding: 14px 4px;
-        font-size: 16px;
+        padding: 0.875rem 0.25rem;
+        font-size: 1rem;
     }
 
     .nav-list ul li:hover>a,
@@ -281,8 +281,8 @@ nav {
     }
 
     .has-dropdown .dropdown-toggle {
-        font-size: 12px;
-        letter-spacing: 1px;
+        font-size: 0.75rem;
+        letter-spacing: 0.0625rem;
         text-transform: uppercase;
         color: #999;
         font-weight: 600;
@@ -303,8 +303,8 @@ nav {
     }
 
     .dropdown-menu li a {
-        padding: 12px 4px 12px 8px;
-        font-size: 15px;
+        padding: 0.75rem 0.25rem 0.75rem 0.5rem;
+        font-size: 0.9375rem;
         color: #444;
     }
 
@@ -323,13 +323,13 @@ nav {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
     .site-name span {
         display: none;
     }
 
     .sign-in-btn button {
-        padding: 8px 16px;
-        font-size: 13px;
+        padding: 0.5rem 1rem;
+        font-size: 0.8125rem;
     }
 }
