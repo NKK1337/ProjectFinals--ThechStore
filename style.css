@@ -926,3 +926,117 @@ nav {
     transition: none;
   }
 }
+.limitted-offers-herobaner {
+  --lim-green-start: #22c55e;
+  --lim-green-end: #16a34a;
+  position: relative;
+  overflow: hidden;
+  max-width: 1232px;
+  margin: 0 auto 80px;
+  margin-top: 80px;
+  padding: 56px 48px;
+  border-radius: 20px;
+  background: linear-gradient(115deg, var(--lim-green-start), var(--lim-green-end));
+  color: #fff;
+  isolation: isolate;
+}
+
+.limitted-offers-herobaner::before,
+.limitted-offers-herobaner::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.limitted-offers-herobaner::before {
+  width: 420px;
+  height: 420px;
+  top: -140px;
+  right: -60px;
+}
+
+.limitted-offers-herobaner::after {
+  width: 300px;
+  height: 300px;
+  bottom: -160px;
+  right: 140px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lim-off-badge {
+  display: inline-flex;
+  margin-bottom: 24px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.lim-off-badge span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.lim-off-title {
+  max-width: 560px;
+  margin: 0 0 16px;
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.lim-off-desc {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 520px;
+  margin: 0 0 32px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.lim-off-code {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.22);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.shop-accessories-btn .btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 32px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--lim-green-end);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.shop-accessories-btn .btn:hover,
+.shop-accessories-btn .btn:focus-visible {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 700px) {
+  .limitted-offers-herobaner {
+    margin-bottom: 56px;
+    padding: 40px 28px;
+  }
+  .lim-off-title {
+    font-size: 1.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shop-accessories-btn .btn {
+    transition: none;
+  }
+}
