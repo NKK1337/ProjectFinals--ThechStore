@@ -60,3 +60,6 @@ if (currentPage === 'index.html') {
 } else if (currentPage === 'shop.html') {
     navHoverShop.classList.add('active');
 }
+
+// filter categories 
+

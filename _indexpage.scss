@@ -145,56 +145,6 @@
     transform: translateY(0);
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-    .hero .shop-page-btn,
-    .hero .new-arrivals-page,
-    .hero .shop-page-btn svg {
-        transition: none;
-    }
-
-    .hero .shop-page-btn:hover,
-    .hero .new-arrivals-page:hover,
-    .hero .shop-page-btn:hover svg {
-        transform: none;
-    }
-}
-
-@media (max-width: 600px) {
-    .hero {
-        padding: 56px 1.25rem;
-    }
-
-    .hero .badge {
-        margin-bottom: 24px;
-        padding: 6px 14px;
-        font-size: 0.75rem;
-    }
-
-    .hero h2 {
-        margin-bottom: 16px;
-        font-size: 2rem;
-        line-height: 1.25;
-    }
-
-    .hero p {
-        margin-bottom: 32px;
-        font-size: 0.9375rem;
-        line-height: 1.7;
-    }
-
-    .hero-buttons {
-        width: 100%;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .hero .shop-page-btn,
-    .hero .new-arrivals-page {
-        padding: 14px 24px;
-    }
-}
-
 // Shop by Category
 
 .shop-by-category-side {
@@ -326,46 +276,6 @@
 .category-card:focus-visible .category-card-arrow {
     color: var(--cat-green);
     transform: translateX(3px);
-}
-
-@media (max-width: 1280px) {
-    .category-card {
-        padding: 20px;
-        gap: 16px;
-    }
-
-    .category-card-img {
-        flex: 0 0 56px;
-        width: 56px;
-        height: 56px;
-    }
-}
-
-@media (max-width: 1200px) {
-    .category-cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .category-cards {
-        grid-template-columns: 1fr;
-    }
-
-    .title-desc-btn {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    .category-card,
-    .category-card-arrow,
-    .btn-category-all .feri,
-    .btn-category-all .btn-arrow {
-        transition: none;
-    }
 }
 
 //  fetured products
@@ -601,40 +511,6 @@
     outline: none;
 }
 
-@media (max-width: 1200px) {
-    .product-card-featured {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .product-card-featured {
-        grid-template-columns: 1fr;
-    }
-
-    .featured-prod-side {
-        padding: 56px 24px;
-    }
-}
-
-@media (hover: none) {
-    .featured-card-actions {
-        opacity: 1;
-        transform: none;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    .featured-card,
-    .featured-card-actions,
-    .featured-card-action,
-    .featured-card-cart,
-    .featured-view-all,
-    .featured-view-all-arrow {
-        transition: none;
-    }
-}
 
 // Limited offers hero banner
 
@@ -739,22 +615,6 @@
     transform: translateY(-2px);
 }
 
-@media (max-width: 700px) {
-    .limitted-offers-herobaner {
-        margin-bottom: 56px;
-        padding: 40px 28px;
-    }
-
-    .lim-off-title {
-        font-size: 1.5rem;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .shop-accessories-btn .btn {
-        transition: none;
-    }
-}
 
 // New Arrivals
 
@@ -1018,42 +878,6 @@
     outline: none;
 }
 
-@media (max-width: 1200px) {
-    .new-arrivals-cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .new-arrivals-cards {
-        grid-template-columns: 1fr;
-    }
-
-    .new-arrivals-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-@media (hover: none) {
-    .new-arrival-actions {
-        opacity: 1;
-        transform: none;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    .new-arrival-card,
-    .new-arrival-actions,
-    .new-arrival-action,
-    .new-arrival-cart,
-    .new-arrivals-view-all-link,
-    .new-arrivals-view-all-link svg {
-        transition: none;
-    }
-}
-
 // Perk cards
 
 .perks-section {
@@ -1122,9 +946,108 @@
     color: #fff;
 }
 
+@media (max-width: 1280px) {
+    .category-card {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .category-card-img {
+        flex: 0 0 56px;
+        width: 56px;
+        height: 56px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .category-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .product-card-featured {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .new-arrivals-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 900px) {
     .endcards-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .limitted-offers-herobaner {
+        margin-bottom: 56px;
+        padding: 40px 28px;
+    }
+
+    .lim-off-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        padding: 56px 1.25rem;
+    }
+
+    .hero .badge {
+        margin-bottom: 24px;
+        padding: 6px 14px;
+        font-size: 0.75rem;
+    }
+
+    .hero h2 {
+        margin-bottom: 16px;
+        font-size: 2rem;
+        line-height: 1.25;
+    }
+
+    .hero p {
+        margin-bottom: 32px;
+        font-size: 0.9375rem;
+        line-height: 1.7;
+    }
+
+    .hero-buttons {
+        width: 100%;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .hero .shop-page-btn,
+    .hero .new-arrivals-page {
+        padding: 14px 24px;
+    }
+
+    .category-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .title-desc-btn {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .product-card-featured {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-prod-side {
+        padding: 56px 24px;
+    }
+
+    .new-arrivals-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .new-arrivals-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
 
@@ -1135,10 +1058,48 @@
     }
 }
 
+@media (hover: none) {
+    .featured-card-actions {
+        opacity: 1;
+        transform: none;
+    }
+
+    .new-arrival-actions {
+        opacity: 1;
+        transform: none;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
+    .hero .shop-page-btn,
+    .hero .new-arrivals-page,
+    .hero .shop-page-btn svg,
+    .category-card,
+    .category-card-arrow,
+    .btn-category-all .feri,
+    .btn-category-all .btn-arrow,
+    .featured-card,
+    .featured-card-actions,
+    .featured-card-action,
+    .featured-card-cart,
+    .featured-view-all,
+    .featured-view-all-arrow,
+    .shop-accessories-btn .btn,
+    .new-arrival-card,
+    .new-arrival-actions,
+    .new-arrival-action,
+    .new-arrival-cart,
+    .new-arrivals-view-all-link,
+    .new-arrivals-view-all-link svg,
     .perk-card,
     .perk-icon {
         transition: none;
+    }
+
+    .hero .shop-page-btn:hover,
+    .hero .new-arrivals-page:hover,
+    .hero .shop-page-btn:hover svg {
+        transform: none;
     }
 }
