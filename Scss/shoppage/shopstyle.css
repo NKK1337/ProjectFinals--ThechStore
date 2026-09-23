@@ -1,0 +1,353 @@
+.flex {
+  display: flex;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  border-bottom: 0.0625rem solid #eee;
+  padding: 0.9375rem 2.5rem;
+  position: relative;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.875rem;
+}
+
+.site-name {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.icon-box {
+  background-color: #22c55e;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-box svg {
+  color: #fff;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.site-name span {
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: 0.0625rem;
+  color: #111;
+}
+
+.nav-list ul {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list ul li {
+  position: relative;
+}
+
+.nav-list ul li > a,
+.nav-list ul li > .dropdown-toggle {
+  cursor: pointer;
+  font-weight: 500;
+  color: #222;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+  transition: all 0.2s ease;
+  font-weight: bolder;
+  text-decoration: none;
+}
+
+.nav-list ul li:hover > a,
+.nav-list ul li:hover > .dropdown-toggle {
+  color: #22c55e;
+  background-color: #f0fdf4;
+}
+
+.nav-list ul li.active > a {
+  color: #22c55e;
+  background-color: #f0fdf4;
+}
+
+.has-dropdown .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border-radius: 0.625rem;
+  box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.12);
+  min-width: 13.75rem;
+  padding: 0.5rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.125rem;
+  z-index: 100;
+}
+
+.has-dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-menu li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.375rem;
+  color: #333;
+  font-weight: 400;
+}
+
+.has-dropdown .dropdown-menu li a {
+  font-weight: 400;
+  font-size: 0.8125rem;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f5f5f5;
+  color: #222;
+}
+
+.dropdown-menu .count {
+  background-color: #eee;
+  color: #555;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 1.25rem;
+}
+
+.dropdown-loading,
+.dropdown-empty,
+.dropdown-error {
+  padding: 0.625rem 0.75rem;
+  font-size: 0.8125rem;
+  color: #999;
+  text-align: center;
+}
+
+.serch-bar {
+  flex: 1;
+  max-width: 25rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.serch-bar input {
+  width: 100%;
+  padding: 0.625rem 2.5rem 0.625rem 1rem;
+  border-radius: 1.25rem;
+  border: 0.0625rem solid #eee;
+  background-color: #f9f9f9;
+  outline: none;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.serch-bar input::-moz-placeholder {
+  color: #999;
+}
+
+.serch-bar input::placeholder {
+  color: #999;
+}
+
+.serch-bar input:focus {
+  border-color: #22c55e;
+  background-color: #fff;
+  box-shadow: 0 0 0 0.1875rem rgba(34, 197, 94, 0.15);
+}
+
+.serch-bar #clearBtn {
+  position: absolute;
+  right: 0.875rem;
+  color: #999;
+  cursor: pointer;
+  display: none;
+}
+
+.serch-bar #clearBtn:hover {
+  color: #333;
+}
+
+.sign-in-btn button {
+  background-color: #22c55e;
+  color: #fff;
+  border: none;
+  padding: 0.625rem 1.5rem;
+  border-radius: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.sign-in-btn button:hover {
+  background-color: #16a34a;
+}
+
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #222;
+  padding: 0.375rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger-btn .icon-close {
+  display: none;
+}
+
+.hamburger-btn.active .icon-open {
+  display: none;
+}
+
+.hamburger-btn.active .icon-close {
+  display: block;
+}
+
+@media (max-width: 48.8125rem) {
+  nav {
+    gap: 0.9375rem;
+  }
+  header {
+    padding: 0.9375rem 1.25rem;
+  }
+  body.menu-open {
+    overflow: hidden;
+  }
+  .nav-list {
+    display: block;
+    position: fixed;
+    top: 4.125rem;
+    right: 0;
+    bottom: 0;
+    width: 17.5rem;
+    max-width: 80%;
+    background: #fff;
+    z-index: 200;
+    padding: 1.25rem;
+    overflow-y: auto;
+    box-shadow: -0.25rem 0 1.25rem rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  .nav-list.open {
+    transform: translateX(0);
+  }
+  .nav-list ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    width: 100%;
+  }
+  .nav-list ul li {
+    width: 100%;
+  }
+  .nav-list ul li > a,
+  .nav-list ul li > .dropdown-toggle {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.875rem 0.25rem;
+    font-size: 1rem;
+  }
+  .nav-list ul li:hover > a,
+  .nav-list ul li:hover > .dropdown-toggle {
+    background-color: transparent;
+  }
+  .has-dropdown .dropdown-toggle {
+    font-size: 0.75rem;
+    letter-spacing: 0.0625rem;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .has-dropdown .dropdown-toggle svg {
+    display: none;
+  }
+  .has-dropdown .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    display: flex !important;
+    min-width: 100%;
+    padding: 0;
+    gap: 0;
+  }
+  .dropdown-menu li a {
+    padding: 0.75rem 0.25rem 0.75rem 0.5rem;
+    font-size: 0.9375rem;
+    color: #444;
+  }
+  .dropdown-menu li a:hover {
+    background-color: transparent;
+    color: #22c55e;
+  }
+  .serch-bar {
+    max-width: none;
+    flex: 1;
+  }
+  .hamburger-btn {
+    display: flex;
+  }
+}
+@media (max-width: 30rem) {
+  .site-name span {
+    display: none;
+  }
+  .sign-in-btn button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+  }
+}
+.title-side {
+  background: #f9fafb;
+  padding: 40px max(24px, (100% - 1232px) / 2);
+}
+
+.title-side p {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111827;
+}
+
+.title-side span {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+@media (max-width: 600px) {
+  .title-side {
+    padding: 32px 24px;
+  }
+  .title-side p {
+    font-size: 22px;
+  }
+}
