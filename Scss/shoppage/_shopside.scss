@@ -20,17 +20,13 @@
     color: #4b5563;
 }
 
-
-
 .wraper {
     padding: 24px max(24px, calc((100% - 1232px) / 2));
 }
 
-
-
 .filter {
-    width: 200px;
-    height: 500px;
+    width: 250px;
+    height: 700px;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 15px;
@@ -38,6 +34,22 @@
     box-sizing: border-box;
 }
 
+.category {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.category span:last-child {
+    margin-left: auto;
+}
+
+.categories-title {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
 
 @media (max-width: 600px) {
     .title-side {

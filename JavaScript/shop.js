@@ -63,3 +63,37 @@ if (currentPage === 'index.html') {
 
 // filter categories 
 
+async function categoriesFilterLoad() {
+    const categoriesFilter = document.getElementById('categoriesFilter');
+    try {
+        const response = await fetch(`${BASE_URL}/api/categories`, {
+            method: 'GET',
+            headers: {
+                'X-API-KEY': API_KEY,
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+        const data = await response.json();
+        const categories = data.data ?? data;
+        categories.forEach(category => {
+            categoriesFilter.innerHTML += `
+        <label class="category">
+            <input 
+                type="radio" 
+                name="category"
+                value="${category.id}"
+            >
+            <span>${category.name}</span>
+            <span>${category.productCount}</span>
+        </label>
+    `;
+        });
+    } catch (err) {
+        console.error('ERROR:', err);
+    }
+}
+
+categoriesFilterLoad();

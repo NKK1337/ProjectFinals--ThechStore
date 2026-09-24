@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TECH</title>
-    <link rel="stylesheet" href="./Reset/reset.css">
+    <link rel="stylesheet" href="../Reset/reset.css">
     <link rel="stylesheet" href="../Scss/shoppage/shopstyle.css">
 </head>
 
@@ -75,19 +75,12 @@
         </div>
         <div class="wraper">
             <section class="filter">
-                <span>Filters</span>
-                <div class="categories">
-                    <span>Categories</span>
-                    <div class="categories-btn"></div>
-                </div>
-                <div class="rating">
-                    <span>Min Rating</span>
-                </div>
-                <div class="pricerange"></div>
-                <div class="availability"></div>
-                <div class="clear-btn">
-                    <button class="clear-all-filters"></button>
-                </div>
+                <p>Filters</p>
+                <hr>
+                <p class="categories-title">Categories</p>
+                <div id="categoriesFilter" class="categories"></div>
+                <p class="categories-title">★ Min Rating</p>
+                <div id="minRating" class="rating"></div>
             </section>
         </div>
     </main>
