@@ -12,7 +12,7 @@
 <body>
     <header>
         <nav>
-            <a href="./index.html" class="site-name flex">
+            <a href="../index.html" class="site-name flex">
                 <div class="icon-box">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -42,7 +42,7 @@
                 </ul>
             </div>
             <div class="serch-bar">
-                <input type="text" placeholder="Search products..." id="searchInput">
+                <input type="text" placeholder="Search products..." id="searchInputHeader">
                 <svg id="clearBtn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -70,21 +70,141 @@
     </header>
     <main>
         <div class="title-side">
+            <div class="breadcrumb">
+                <a href="./shop.html">Home</a>
+                <span class="breadcrumb-sep">&rsaquo;</span>
+                <span>Shop</span>
+            </div>
             <p>All Products</p>
             <span>Discover our full range of tech products</span>
         </div>
         <div class="wraper">
-            <section class="filter">
-                <p>Filters</p>
+            <div class="filter-backdrop" id="filterBackdrop"></div>
+            <aside class="filter" id="filterPanel">
+                <div class="filter-panel-head">
+                    <p>Filters</p>
+                    <button type="button" class="filter-close-btn" id="filterCloseBtn" aria-label="Close filters">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
                 <hr>
                 <p class="categories-title">Categories</p>
                 <div id="categoriesFilter" class="categories"></div>
-                <p class="categories-title">★ Min Rating</p>
-                <div id="minRating" class="rating"></div>
+                <p class="categories-title">Min Rating</p>
+                <div id="minRating" class="rating-filters">
+                    <button type="button" class="rating-btn" data-rating="4">
+                        <span class="stars">
+                            <span class="star on">★</span><span class="star on">★</span><span
+                                class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+                        </span>
+                        <span class="rating-label">4 &amp; up</span>
+                    </button>
+                    <button type="button" class="rating-btn" data-rating="3">
+                        <span class="stars">
+                            <span class="star on">★</span><span class="star on">★</span><span
+                                class="star on">★</span><span class="star">★</span><span class="star">★</span>
+                        </span>
+                        <span class="rating-label">3 &amp; up</span>
+                    </button>
+                    <button type="button" class="rating-btn" data-rating="2">
+                        <span class="stars">
+                            <span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span>
+                        </span>
+                        <span class="rating-label">2 &amp; up</span>
+                    </button>
+                    <button type="button" class="rating-btn" data-rating="1">
+                        <span class="stars">
+                            <span class="star on">★</span><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span>
+                        </span>
+                        <span class="rating-label">1 &amp; up</span>
+                    </button>
+                </div>
+                <p class="categories-title">Price Range</p>
+                <div class="price-range">
+                    <div class="price-field">
+                        <label for="minPrice">Min</label>
+                        <input type="text" id="minPrice" value="$0">
+                    </div>
+                    <span class="price-sep">-</span>
+                    <div class="price-field">
+                        <label for="maxPrice">Max</label>
+                        <input type="text" id="maxPrice" value="$9999">
+                    </div>
+                </div>
+                <p class="categories-title">Brand</p>
+                <input type="text" class="brand-search" id="brandSearch" placeholder="Search brands...">
+                <p class="categories-title">Availability</p>
+                <label class="availability-row">
+                    <input type="checkbox" id="inStockOnly">
+                    <span>In Stock Only</span>
+                </label>
+                <button type="button" class="clear-filters-btn" id="clearFiltersBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    Clear All Filters
+                </button>
+            </aside>
+            <section class="products">
+                <div class="products-toolbar">
+                    <button type="button" class="filters-toggle-btn" id="filtersToggleBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="4" y1="21" x2="4" y2="14"></line>
+                            <line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line>
+                            <line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line>
+                            <line x1="9" y1="8" x2="15" y2="8"></line>
+                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
+                        Filters
+                    </button>
+                    <div class="toolbar-search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="productSearchInput" placeholder="Search products...">
+                    </div>
+                    <div class="toolbar-meta">
+                        <span class="results-count" id="resultsCount">40 products</span>
+                        <select class="sort-select" id="sortSelect">
+                            <option value="" selected disabled>Sort by</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="rating-desc">Top Rated</option>
+                            <option value="newest">Newest</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="product-grid" id="productGrid">
+                </div>
+                <div class="pagination">
+                    <button type="button" class="page-btn page-nav" disabled>Prev</button>
+                    <button type="button" class="page-btn active">1</button>
+                    <button type="button" class="page-btn">2</button>
+                    <button type="button" class="page-btn">3</button>
+                    <span class="page-ellipsis">&hellip;</span>
+                    <button type="button" class="page-btn">14</button>
+                    <button type="button" class="page-btn page-nav">Next</button>
+                </div>
             </section>
         </div>
     </main>
     <script src="../JavaScript/burgermenu.js"></script>
+    <script src="../JavaScript/shopfilter.js"></script>
     <script src="../JavaScript/shop.js"></script>
 </body>
 

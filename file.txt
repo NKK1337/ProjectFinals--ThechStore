@@ -1,0 +1,309 @@
+                    cardebis markup
+                    <article class="product-card">
+                        <div class="product-image product-image--dark">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Laptops</span> &middot; Apple</p>
+                            <h3 class="product-name">MacBook Pro 14-inch M3 Pro</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span></span>
+                                <span class="rating-value">2.7</span>
+                            </div>
+                            <p class="product-price">USD 5,499</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-image product-image--slate">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Laptops</span> &middot; Apple</p>
+                            <h3 class="product-name">MacBook Air 15-inch M2</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span></span>
+                                <span class="rating-value">3.0</span>
+                            </div>
+                            <p class="product-price">USD 3,799</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-image product-image--slate">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Laptops</span> &middot; Dell</p>
+                            <h3 class="product-name">Dell XPS 15 9530</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></span>
+                                <span class="rating-value">0.0</span>
+                            </div>
+                            <p class="product-price">USD 4,799</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-image product-image--dark">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Laptops</span> &middot; ASUS</p>
+                            <h3 class="product-name">ASUS ROG Zephyrus G14</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></span>
+                                <span class="rating-value">4.5</span>
+                            </div>
+                            <p class="product-price">USD 4,199</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-image product-image--dark">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Laptops</span> &middot; Lenovo</p>
+                            <h3 class="product-name">Lenovo ThinkPad X1 Carbon Gen 11</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span></span>
+                                <span class="rating-value">4.0</span>
+                            </div>
+                            <p class="product-price">USD 4,999</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-image product-image--amber">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Laptops</span> &middot; HP</p>
+                            <h3 class="product-name">HP Spectre x360 14</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></span>
+                                <span class="rating-value">5.0</span>
+                            </div>
+                            <p class="product-price">USD 3,999</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-image product-image--nature">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="10" y1="19" x2="14" y2="19"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Smartphones</span> &middot; Samsung</p>
+                            <h3 class="product-name">Samsung Galaxy Tab S9</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span></span>
+                                <span class="rating-value">4.2</span>
+                            </div>
+                            <p class="product-price">USD 1,199</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-image product-image--wood">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"></rect><line x1="11" y1="18" x2="13" y2="18"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Smartphones</span> &middot; Apple</p>
+                            <h3 class="product-name">iPhone 15 Pro</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span></span>
+                                <span class="rating-value">4.4</span>
+                            </div>
+                            <p class="product-price">USD 999</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <div class="product-image product-image--slate">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Headphones &amp; Audio</span> &middot; Sony</p>
+                            <h3 class="product-name">Sony WH-1000XM5</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></span>
+                                <span class="rating-value">4.8</span>
+                            </div>
+                            <p class="product-price">USD 399</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                </div>
+
+
+
+
+
+
+
+
+
+erit carid
+
+                <article class="product-card">
+                        <div class="product-image product-image--dark">
+                            <svg class="device-icon" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            <div class="product-actions">
+                                <button type="button" class="icon-btn" aria-label="Add to wishlist">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                                </button>
+                                <button type="button" class="icon-btn" aria-label="Quick view">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-meta"><span class="category">Laptops</span> &middot; Apple</p>
+                            <h3 class="product-name">MacBook Pro 14-inch M3 Pro</h3>
+                            <div class="product-rating">
+                                <span class="stars"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span></span>
+                                <span class="rating-value">2.7</span>
+                            </div>
+                            <p class="product-price">USD 5,499</p>
+                            <button type="button" class="add-to-cart-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+
+
+
+
+ratingi gasasworebeli
+
+                                    <div id="minRating" class="rating-filters">
+                    <button type="button" class="rating-btn" data-rating="4">
+                        <span class="stars">
+                            <span class="star on">★</span><span class="star on">★</span><span
+                                class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+                        </span>
+                        <span class="rating-label">4 &amp; up</span>
+                    </button>
+                    <button type="button" class="rating-btn" data-rating="3">
+                        <span class="stars">
+                            <span class="star on">★</span><span class="star on">★</span><span
+                                class="star on">★</span><span class="star">★</span><span class="star">★</span>
+                        </span>
+                        <span class="rating-label">3 &amp; up</span>
+                    </button>
+                    <button type="button" class="rating-btn" data-rating="2">
+                        <span class="stars">
+                            <span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span>
+                        </span>
+                        <span class="rating-label">2 &amp; up</span>
+                    </button>
+                    <button type="button" class="rating-btn" data-rating="1">
+                        <span class="stars">
+                            <span class="star on">★</span><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span>
+                        </span>
+                        <span class="rating-label">1 &amp; up</span>
+                    </button>
+                </div>

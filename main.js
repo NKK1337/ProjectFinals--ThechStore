@@ -2,8 +2,10 @@
 const API_KEY = 'ebbee9bb-1884-43ad-ae71-afa71ea9460e';
 const BASE_URL = 'https://shopapi.stepacademy.ge';
 
+
 async function loadCategories() {
     const dropdown = document.getElementById('categoriesDropdown');
+    if (!dropdown) return;
     try {
         const response = await fetch(`${BASE_URL}/api/categories`, {
             method: 'GET',
@@ -21,7 +23,7 @@ async function loadCategories() {
         }
         dropdown.innerHTML = categories.map(category => `
     <li>
-        <a href="#" data-category-id="${category.id}">
+        <a href="./html/shop.html?category=${category.id}">
             ${category.name}
             <span class="count">${category.productCount}</span>
         </a>
@@ -35,34 +37,55 @@ async function loadCategories() {
 
 loadCategories();
 
-// serchbar js
-const searchInput = document.getElementById('searchInput');
+// searchbar js
+const searchInputHeader = document.getElementById('searchInputHeader');
 const clearBtn = document.getElementById('clearBtn');
 
-searchInput.addEventListener('input', () => {
-    clearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
-});
+if (searchInputHeader && clearBtn) {
+    searchInputHeader.addEventListener('input', () => {
+        clearBtn.style.display = searchInputHeader.value.length > 0 ? 'block' : 'none';
+    });
 
-clearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    clearBtn.style.display = 'none';
-    searchInput.focus();
-});
+    clearBtn.addEventListener('click', () => {
+        searchInputHeader.value = '';
+        clearBtn.style.display = 'none';
+        searchInputHeader.focus();
+    });
+}
+
+if (searchInputHeader && clearBtn) {
+    searchInputHeader.addEventListener('input', () => {
+        clearBtn.style.display = searchInputHeader.value.length > 0 ? 'block' : 'none';
+    });
+    clearBtn.addEventListener('click', () => {
+        searchInputHeader.value = '';
+        clearBtn.style.display = 'none';
+        searchInputHeader.focus();
+    });
+    searchInputHeader.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = searchInputHeader.value.trim();
+            if (query) {
+                window.location.href = `./html/shop.html?search=${encodeURIComponent(query)}`;
+            }
+        }
+    });
+}
+
 
 // toggle hover
-
-const navHoverHome = document.getElementById('navHoverHome')
-const navHoverShop = document.getElementById('navHoverShop')
+const navHoverHome = document.getElementById('navHoverHome');
+const navHoverShop = document.getElementById('navHoverShop');
 
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-if (currentPage === 'index.html') {
+if (currentPage === 'index.html' && navHoverHome) {
     navHoverHome.classList.add('active');
-} else if (currentPage === 'shop.html') {
+} else if (currentPage === 'shop.html' && navHoverShop) {
     navHoverShop.classList.add('active');
 }
 
-// categoris for side page
 const categoryCards = document.getElementById('category-cards');
 
 async function loadCategoryCards() {
@@ -80,11 +103,11 @@ async function loadCategoryCards() {
         const result = await response.json();
         const categories = (result.data || []).slice(0, 4);
         if (categories.length === 0) {
-            categoryCards.innerHTML = '<p>No categories found</p>'
+            categoryCards.innerHTML = '<p>No categories found</p>';
             return;
         }
         categoryCards.innerHTML = categories.map(category => `
-            <a href="#" class="category-card" data-category-id="${category.id}">
+            <a href="./html/shop.html?category=${category.id}" class="category-card">
                 <div class="category-card-img">
                     <img src="${category.imageUrl || category.image || ''}" alt="${category.name}">
                 </div>
@@ -101,7 +124,7 @@ async function loadCategoryCards() {
         `).join('');
     }
     catch (err) {
-        categoryCards.innerHTML = '<p>Failed to load categories</p>'
+        categoryCards.innerHTML = '<p>Failed to load categories</p>';
         console.error('Category cards fetch error:', err);
     }
 }
@@ -109,7 +132,6 @@ async function loadCategoryCards() {
 loadCategoryCards();
 
 // featured products
-
 const featuredCards = document.getElementById('featured-cards');
 
 function pickName(value) {
@@ -210,7 +232,6 @@ loadFeaturedProducts();
 
 // new arrivals
 const newArrivalsCards = document.getElementById('new-arrivals-cards');
-
 async function loadNewArrivals() {
     if (!newArrivalsCards) return;
     try {
