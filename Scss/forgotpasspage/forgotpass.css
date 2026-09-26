@@ -1,0 +1,330 @@
+.flex {
+  display: flex;
+}
+
+:root {
+  --green: #22c55e;
+  --green-dark: #16a34a;
+  --green-glow: rgba(34, 197, 94, 0.35);
+  --bg-dark: #0a0d0a;
+  --text-muted: #a1a1aa;
+  --input-bg: #f4f4f5;
+  --error: #ef4444;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+main {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.banner-side {
+  flex: 1 1 50%;
+  background-color: var(--bg-dark);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 40px;
+  color: #fff;
+}
+.banner-side .logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px var(--green-glow);
+  margin-bottom: 24px;
+}
+.banner-side .logo svg {
+  width: 30px;
+  height: 30px;
+  color: #fff;
+}
+.banner-side .banner-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+.banner-side .banner-desc {
+  max-width: 400px;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 48px;
+}
+
+.card-conteiner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+}
+
+.card-fast,
+.card-lightning,
+.card-support {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px;
+  border-radius: 12px;
+  transition: background 0.25s ease, transform 0.25s ease;
+  cursor: default;
+}
+.card-fast:hover,
+.card-lightning:hover,
+.card-support:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(6px);
+}
+
+.card-logo,
+.card-logo-second,
+.card-logo-third {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+.card-logo svg,
+.card-logo-second svg,
+.card-logo-third svg {
+  width: 20px;
+  height: 20px;
+}
+
+.card-fast:hover .card-logo,
+.card-lightning:hover .card-logo-second,
+.card-support:hover .card-logo-third {
+  background: rgba(34, 197, 94, 0.28);
+  box-shadow: 0 0 16px var(--green-glow);
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.form-side {
+  flex: 1 1 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+}
+
+.form-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  margin-bottom: 20px;
+}
+.form-logo svg {
+  width: 26px;
+  height: 26px;
+}
+
+.form-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #18181b;
+  margin-bottom: 6px;
+}
+
+.form-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.forgot-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.input-group {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  background: var(--input-bg);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 0 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.input-group .input-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: #9ca3af;
+  margin-right: 10px;
+}
+.input-group .input-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.input-group input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  color: #18181b;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+}
+.input-group input::-moz-placeholder {
+  color: #9ca3af;
+}
+.input-group input::placeholder {
+  color: #9ca3af;
+}
+.input-group:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-glow);
+}
+.input-group.error {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.btn-reset {
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+  background: var(--green);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 6px;
+  box-shadow: 0 4px 14px var(--green-glow);
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+.btn-reset svg {
+  width: 18px;
+  height: 18px;
+}
+.btn-reset:hover {
+  background: var(--green-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(34, 197, 94, 0.45);
+}
+.btn-reset:active {
+  transform: translateY(-1px);
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 26px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #52525b;
+  text-decoration: none;
+}
+.back-link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+.back-link span {
+  transition: color 0.2s ease;
+}
+.back-link:hover {
+  color: var(--green);
+}
+.back-link:hover svg {
+  transform: translateX(-4px);
+}
+.back-link:hover span {
+  color: var(--green);
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .banner-side {
+    display: none;
+  }
+  .form-side {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+@media (max-width: 520px) {
+  .form-side {
+    padding: 40px 20px;
+  }
+  .form-title {
+    font-size: 22px;
+  }
+  .forgot-form {
+    max-width: 100%;
+  }
+}
+@media (max-width: 340px) {
+  .form-logo {
+    width: 56px;
+    height: 56px;
+  }
+  .form-title {
+    font-size: 20px;
+  }
+  .form-side {
+    padding: 30px 16px;
+  }
+}
