@@ -14,7 +14,7 @@ async function loadCategories() {
         });
         if (!response.ok) throw new Error('Request failed');
         const result = await response.json();
-        const categories = result.data;
+        const categories = result.data || result;
         if (!categories || categories.length === 0) {
             dropdown.innerHTML = '<li class="dropdown-empty">No categories found</li>';
             return;
@@ -23,7 +23,7 @@ async function loadCategories() {
             <li>
                 <a href="shop.html?category=${category.id}">
                     ${category.name}
-                    <span class="count">${category.productCount}</span>
+                    <span class="count">${category.productCount || 0}</span>
                 </a>
             </li>
         `).join('');
@@ -44,6 +44,7 @@ if (currentPage === 'index.html' && navHoverHome) {
 } else if (currentPage === 'shop.html' && navHoverShop) {
     navHoverShop.classList.add('active');
 }
+
 async function categoriesFilterLoad() {
     const categoriesFilter = document.getElementById('categoriesFilter');
     if (!categoriesFilter) return;
@@ -77,7 +78,7 @@ async function categoriesFilterLoad() {
                         ${isChecked}
                     >
                     <span>${category.name}</span>
-                    <span>${category.productCount}</span>
+                    <span>${category.productCount || 0}</span>
                 </label>
             `;
         });
@@ -119,11 +120,11 @@ let brandTimeOut = null;
 let thisCurrentPage = 1;
 const itemsPerPage = 8;
 
-
 function cleanPrice(val) {
     if (!val) return '';
     return val.toString().replace(/[^0-9.]/g, '');
 }
+
 function loadProducts(
     page = 1,
     serchInput = '',
@@ -254,8 +255,9 @@ function loadProducts(
             }
             renderPagination(thisCurrentPage, totalPages);
         })
-        .catch(err => console.error('dagverxa araris produqtebi dd:', err));
+        .catch(err => console.error('Products fetch error:', err));
 }
+
 function renderPagination(currentPage, totalPages) {
     const paginationContainer = document.querySelector('.pagination');
     if (!paginationContainer) return;
@@ -267,9 +269,11 @@ function renderPagination(currentPage, totalPages) {
     html += `<button type="button" class="page-btn page-nav" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">Next</button>`;
     paginationContainer.innerHTML = html;
 }
+
 function changePage(newPage) {
     loadProducts(newPage, thisSerchInput, currentSort, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);
 }
+
 if (serchBar) {
     serchBar.addEventListener('input', (e) => {
         const query = e.target.value;
@@ -286,6 +290,7 @@ if (serchBar) {
         }
     });
 }
+
 if (searchInputHeader && clearBtn) {
     searchInputHeader.addEventListener('input', () => {
         clearBtn.style.display = searchInputHeader.value.length > 0 ? 'block' : 'none';
@@ -303,6 +308,7 @@ if (searchInputHeader && clearBtn) {
         }
     });
 }
+
 if (minRatingContainer) {
     const ratingBtns = minRatingContainer.querySelectorAll('.rating-btn');
     ratingBtns.forEach(btn => {
@@ -320,6 +326,7 @@ if (minRatingContainer) {
         });
     });
 }
+
 function handlePriceInputChange() {
     clearTimeout(priceTimeOut);
     priceTimeOut = setTimeout(() => {
@@ -328,8 +335,10 @@ function handlePriceInputChange() {
         loadProducts(1, thisSerchInput, currentSort, currentCategory, currentMinRating, minVal, maxVal, currentBrand, currentInStock);
     }, 400);
 }
+
 if (minPriceInput) minPriceInput.addEventListener('input', handlePriceInputChange);
 if (maxPriceInput) maxPriceInput.addEventListener('input', handlePriceInputChange);
+
 if (brandSearchInput) {
     brandSearchInput.addEventListener('input', (e) => {
         const query = e.target.value;
@@ -346,18 +355,19 @@ if (brandSearchInput) {
         }
     });
 }
+
 if (inStockCheckbox) {
     inStockCheckbox.addEventListener('change', (e) => {
         currentInStock = e.target.checked;
         loadProducts(1, thisSerchInput, currentSort, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);
     });
 }
+
 if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
         loadProducts(1, thisSerchInput, e.target.value, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);
     });
 }
-
 
 if (clearFiltersBtn) {
     clearFiltersBtn.addEventListener('click', () => {
@@ -369,7 +379,6 @@ if (clearFiltersBtn) {
         currentMaxPrice = '';
         currentBrand = '';
         currentInStock = false;
-
         if (serchBar) serchBar.value = '';
         if (searchInputHeader) searchInputHeader.value = '';
         if (brandSearchInput) brandSearchInput.value = '';
@@ -445,5 +454,92 @@ if (inStockFromUrl === 'true') {
     if (inStockCheckbox) inStockCheckbox.checked = true;
 }
 
-categoriesFilterLoad();
-loadProducts(1, thisSerchInput, currentSort, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);
+async function getUserInitials(token) {
+    let firstName = localStorage.getItem('userFirstName') || '';
+    let lastName = localStorage.getItem('userLastName') || '';
+    if (firstName || lastName) {
+        const f = firstName ? firstName.trim().charAt(0).toUpperCase() : '';
+        const l = lastName ? lastName.trim().charAt(0).toUpperCase() : '';
+        return `${f}${l}` || 'U';
+    }
+    if (token) {
+        try {
+            const response = await fetch(`${BASE_URL}/api/profile`, {
+                method: 'GET',
+                headers: {
+                    'accept': 'application/json',
+                    'X-API-KEY': API_KEY,
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const result = await response.json();
+                const user = result.data || result;
+                firstName = user.firstName || user.first_name || user.name?.split(' ')[0] || '';
+                lastName = user.lastName || user.last_name || user.name?.split(' ')[1] || '';
+                if (firstName) localStorage.setItem('userFirstName', firstName);
+                if (lastName) localStorage.setItem('userLastName', lastName);
+                const f = firstName ? firstName.trim().charAt(0).toUpperCase() : '';
+                const l = lastName ? lastName.trim().charAt(0).toUpperCase() : '';
+                if (f || l) return `${f}${l}`;
+            }
+        } catch (err) {
+            console.error('Error fetching user profile:', err);
+        }
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(window.atob(base64));
+            const name = payload.name || payload.unique_name || payload.sub || '';
+            if (name) {
+                const parts = name.trim().split(' ');
+                const f = parts[0] ? parts[0].charAt(0).toUpperCase() : '';
+                const l = parts[1] ? parts[1].charAt(0).toUpperCase() : '';
+                if (f || l) return `${f}${l}`;
+            }
+        } catch (e) {
+            console.error('Error parsing token:', e);
+        }
+    }
+    return 'U';
+}
+
+async function renderShopAuthHeader() {
+    const authContainer = document.getElementById('authContainer');
+    if (!authContainer) return;
+    const token = localStorage.getItem('accessToken');
+    const profilePath = './profile.html';
+    const cartPath = './cart.html';
+    const favoritesPath = './favorites.html';
+    const signInPath = './signin.html';
+    if (token) {
+        const initials = await getUserInitials(token);
+        authContainer.innerHTML = `
+            <a href="${favoritesPath}" class="header-icon-btn" title="Favorites">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            </a>
+            <a href="${cartPath}" class="header-icon-btn" title="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </a>
+            <a href="${profilePath}" class="profile-avatar-btn" title="My Profile">${initials}</a>
+        `;
+    } else {
+        authContainer.innerHTML = `
+            <a class="sign-in-a" href="${signInPath}">
+                <button class="sign-in-btn-element">Sign In</button>
+            </a>
+        `;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderShopAuthHeader();
+    categoriesFilterLoad();
+    loadProducts(1, thisSerchInput, currentSort, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);
+});

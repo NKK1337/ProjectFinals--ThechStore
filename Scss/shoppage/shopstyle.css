@@ -2,15 +2,21 @@
   display: flex;
 }
 
+html,
 body {
-  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 header {
+  width: 100%;
+  background-color: #ffffff;
   border-bottom: 0.0625rem solid #eee;
   padding: 0.9375rem 2.5rem;
   position: relative;
+  box-sizing: border-box;
 }
 
 nav {
@@ -18,6 +24,9 @@ nav {
   align-items: center;
   justify-content: space-between;
   gap: 1.875rem;
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .site-name {
@@ -27,6 +36,7 @@ nav {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  flex-shrink: 0;
 }
 
 .icon-box {
@@ -39,7 +49,7 @@ nav {
 }
 
 .icon-box svg {
-  color: #fff;
+  color: #ffffff;
   width: 1.25rem;
   height: 1.25rem;
 }
@@ -48,7 +58,7 @@ nav {
   font-weight: 700;
   font-size: 1.125rem;
   letter-spacing: 0.0625rem;
-  color: #111;
+  color: #111111;
 }
 
 .nav-list ul {
@@ -67,24 +77,19 @@ nav {
 .nav-list ul li > a,
 .nav-list ul li > .dropdown-toggle {
   cursor: pointer;
-  font-weight: 500;
-  color: #222;
+  color: #222222;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   display: flex;
   align-items: center;
   gap: 0.3125rem;
   transition: all 0.2s ease;
-  font-weight: bolder;
+  font-weight: 600;
   text-decoration: none;
 }
 
 .nav-list ul li:hover > a,
-.nav-list ul li:hover > .dropdown-toggle {
-  color: #22c55e;
-  background-color: #f0fdf4;
-}
-
+.nav-list ul li:hover > .dropdown-toggle,
 .nav-list ul li.active > a {
   color: #22c55e;
   background-color: #f0fdf4;
@@ -94,7 +99,7 @@ nav {
   position: absolute;
   top: 100%;
   left: 0;
-  background: #fff;
+  background: #ffffff;
   border-radius: 0.625rem;
   box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.12);
   min-width: 13.75rem;
@@ -115,23 +120,20 @@ nav {
   align-items: center;
   padding: 0.625rem 0.75rem;
   border-radius: 0.375rem;
-  color: #333;
-  font-weight: 400;
-}
-
-.has-dropdown .dropdown-menu li a {
+  color: #333333;
   font-weight: 400;
   font-size: 0.8125rem;
+  text-decoration: none;
 }
 
 .dropdown-menu li a:hover {
   background-color: #f5f5f5;
-  color: #222;
+  color: #222222;
 }
 
 .dropdown-menu .count {
-  background-color: #eee;
-  color: #555;
+  background-color: #eeeeee;
+  color: #555555;
   font-size: 0.75rem;
   padding: 0.125rem 0.5rem;
   border-radius: 1.25rem;
@@ -142,7 +144,7 @@ nav {
 .dropdown-error {
   padding: 0.625rem 0.75rem;
   font-size: 0.8125rem;
-  color: #999;
+  color: #999999;
   text-align: center;
 }
 
@@ -158,56 +160,112 @@ nav {
   width: 100%;
   padding: 0.625rem 2.5rem 0.625rem 1rem;
   border-radius: 1.25rem;
-  border: 0.0625rem solid #eee;
-  background-color: #f9f9f9;
+  border: 0.0625rem solid #e5e7eb;
+  background-color: #f9fafb;
   outline: none;
   font-size: 0.875rem;
   transition: all 0.2s ease;
 }
 
 .serch-bar input::-moz-placeholder {
-  color: #999;
+  color: #9ca3af;
 }
 
 .serch-bar input::placeholder {
-  color: #999;
+  color: #9ca3af;
 }
 
 .serch-bar input:focus {
   border-color: #22c55e;
-  background-color: #fff;
+  background-color: #ffffff;
   box-shadow: 0 0 0 0.1875rem rgba(34, 197, 94, 0.15);
 }
 
 .serch-bar #clearBtn {
   position: absolute;
   right: 0.875rem;
-  color: #999;
+  color: #9ca3af;
   cursor: pointer;
   display: none;
 }
 
 .serch-bar #clearBtn:hover {
-  color: #333;
+  color: #374151;
 }
 
-.sign-in-btn button {
-  background-color: #22c55e;
-  color: #fff;
-  border: none;
-  padding: 0.625rem 1.5rem;
-  border-radius: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.875rem;
-}
-
-.sign-in-btn button:hover {
-  background-color: #16a34a;
+.auth-header-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .sign-in-a {
-  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.auth-header-container button,
+.sign-in-btn-element {
+  background-color: #22c55e !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 0.625rem 1.375rem !important;
+  border-radius: 1.25rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+  outline: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background-color 0.2s ease !important;
+  box-shadow: none !important;
+}
+
+.auth-header-container button:hover,
+.sign-in-btn-element:hover {
+  background-color: #16a34a !important;
+}
+
+.header-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.375rem;
+  height: 2.375rem;
+  border-radius: 50%;
+  border: 0.0625rem solid #e5e7eb;
+  background-color: #ffffff;
+  color: #374151;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.header-icon-btn:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  color: #22c55e;
+}
+
+.profile-avatar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.375rem;
+  height: 2.375rem;
+  border-radius: 50%;
+  background-color: #22c55e;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.profile-avatar-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.04);
 }
 
 .hamburger-btn {
@@ -215,7 +273,7 @@ nav {
   background: none;
   border: none;
   cursor: pointer;
-  color: #222;
+  color: #222222;
   padding: 0.375rem;
   align-items: center;
   justify-content: center;
@@ -234,11 +292,11 @@ nav {
 }
 
 @media (max-width: 48.8125rem) {
-  nav {
-    gap: 0.9375rem;
-  }
   header {
     padding: 0.9375rem 1.25rem;
+  }
+  nav {
+    gap: 0.9375rem;
   }
   body.menu-open {
     overflow: hidden;
@@ -251,7 +309,7 @@ nav {
     bottom: 0;
     width: 17.5rem;
     max-width: 80%;
-    background: #fff;
+    background: #ffffff;
     z-index: 200;
     padding: 1.25rem;
     overflow-y: auto;
@@ -286,7 +344,7 @@ nav {
     font-size: 0.75rem;
     letter-spacing: 0.0625rem;
     text-transform: uppercase;
-    color: #999;
+    color: #999999;
     font-weight: 600;
     pointer-events: none;
   }
@@ -304,7 +362,7 @@ nav {
   .dropdown-menu li a {
     padding: 0.75rem 0.25rem 0.75rem 0.5rem;
     font-size: 0.9375rem;
-    color: #444;
+    color: #444444;
   }
   .dropdown-menu li a:hover {
     background-color: transparent;
@@ -322,9 +380,10 @@ nav {
   .site-name span {
     display: none;
   }
-  .sign-in-btn button {
-    padding: 0.5rem 1rem;
-    font-size: 0.8125rem;
+  .auth-header-container button,
+  .sign-in-btn-element {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8125rem !important;
   }
 }
 .title-side {
