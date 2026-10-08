@@ -1,6 +1,5 @@
 const API_KEY = 'ebbee9bb-1884-43ad-ae71-afa71ea9460e';
 const BASE_URL = 'https://shopapi.stepacademy.ge';
-
 const token = localStorage.getItem('accessToken') || '';
 
 function getHeaders() {

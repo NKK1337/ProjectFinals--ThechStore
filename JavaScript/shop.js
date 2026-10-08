@@ -1,6 +1,44 @@
 const API_KEY = 'ebbee9bb-1884-43ad-ae71-afa71ea9460e';
 const BASE_URL = 'https://shopapi.stepacademy.ge';
 
+let thisSerchInput = '';
+let currentSort = '';
+let currentCategory = '';
+let currentMinRating = '';
+let currentMinPrice = '';
+let currentMaxPrice = '';
+let currentBrand = '';
+let currentInStock = false;
+let serchTimeOut = null;
+let priceTimeOut = null;
+let brandTimeOut = null;
+let thisCurrentPage = 1;
+const itemsPerPage = 8;
+
+
+const productsContainer = document.getElementById('productGrid');
+const serchBar = document.getElementById('productSearchInput');
+const sortSelect = document.getElementById('sortSelect');
+const searchInputHeader = document.getElementById('searchInputHeader');
+const clearBtn = document.getElementById('clearBtn');
+const minRatingContainer = document.getElementById('minRating');
+const minPriceInput = document.getElementById('minPrice');
+const maxPriceInput = document.getElementById('maxPrice');
+const brandSearchInput = document.getElementById('brandSearch');
+const inStockCheckbox = document.getElementById('inStockOnly');
+const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+const navHoverHome = document.getElementById('navHoverHome');
+const navHoverShop = document.getElementById('navHoverShop');
+const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+if (currentPage === 'index.html' && navHoverHome) {
+    navHoverHome.classList.add('active');
+} else if (currentPage === 'shop.html' && navHoverShop) {
+    navHoverShop.classList.add('active');
+}
+function cleanPrice(val) {
+    if (!val) return '';
+    return val.toString().replace(/[^0-9.]/g, '');
+}
 async function loadCategories() {
     const dropdown = document.getElementById('categoriesDropdown');
     if (!dropdown) return;
@@ -32,19 +70,6 @@ async function loadCategories() {
         console.error('Categories fetch error:', err);
     }
 }
-
-loadCategories();
-
-const navHoverHome = document.getElementById('navHoverHome');
-const navHoverShop = document.getElementById('navHoverShop');
-const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-
-if (currentPage === 'index.html' && navHoverHome) {
-    navHoverHome.classList.add('active');
-} else if (currentPage === 'shop.html' && navHoverShop) {
-    navHoverShop.classList.add('active');
-}
-
 async function categoriesFilterLoad() {
     const categoriesFilter = document.getElementById('categoriesFilter');
     if (!categoriesFilter) return;
@@ -56,9 +81,7 @@ async function categoriesFilterLoad() {
                 'Content-Type': 'application/json'
             }
         });
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
         const data = await response.json();
         const categories = data.data ?? data;
         let htmlContent = `
@@ -93,38 +116,6 @@ async function categoriesFilterLoad() {
         console.error('ERROR:', err);
     }
 }
-
-const productsContainer = document.getElementById('productGrid');
-const serchBar = document.getElementById('productSearchInput');
-const sortSelect = document.getElementById('sortSelect');
-const searchInputHeader = document.getElementById('searchInputHeader');
-const clearBtn = document.getElementById('clearBtn');
-const minRatingContainer = document.getElementById('minRating');
-const minPriceInput = document.getElementById('minPrice');
-const maxPriceInput = document.getElementById('maxPrice');
-const brandSearchInput = document.getElementById('brandSearch');
-const inStockCheckbox = document.getElementById('inStockOnly');
-const clearFiltersBtn = document.getElementById('clearFiltersBtn');
-
-let thisSerchInput = '';
-let currentSort = '';
-let currentCategory = '';
-let currentMinRating = '';
-let currentMinPrice = '';
-let currentMaxPrice = '';
-let currentBrand = '';
-let currentInStock = false;
-let serchTimeOut = null;
-let priceTimeOut = null;
-let brandTimeOut = null;
-let thisCurrentPage = 1;
-const itemsPerPage = 8;
-
-function cleanPrice(val) {
-    if (!val) return '';
-    return val.toString().replace(/[^0-9.]/g, '');
-}
-
 function loadProducts(
     page = 1,
     serchInput = '',
@@ -163,30 +154,14 @@ function loadProducts(
         sortDescendingParam = 'true';
     }
     let url = `${BASE_URL}/api/products/filter?Take=${itemsPerPage}&Page=${thisCurrentPage}`;
-    if (thisSerchInput !== '') {
-        url += `&Search=${querySearch}`;
-    }
-    if (currentCategory !== '') {
-        url += `&CategoryId=${encodeURIComponent(currentCategory)}`;
-    }
-    if (currentMinRating !== '') {
-        url += `&MinRating=${encodeURIComponent(currentMinRating)}`;
-    }
-    if (currentMinPrice !== '') {
-        url += `&MinPrice=${encodeURIComponent(currentMinPrice)}`;
-    }
-    if (currentMaxPrice !== '') {
-        url += `&MaxPrice=${encodeURIComponent(currentMaxPrice)}`;
-    }
-    if (currentBrand !== '') {
-        url += `&Brand=${encodeURIComponent(currentBrand)}`;
-    }
-    if (currentInStock) {
-        url += `&InStock=true`;
-    }
-    if (sortByParam !== '') {
-        url += `&SortBy=${sortByParam}&SortDescending=${sortDescendingParam}`;
-    }
+    if (thisSerchInput !== '') url += `&Search=${querySearch}`;
+    if (currentCategory !== '') url += `&CategoryId=${encodeURIComponent(currentCategory)}`;
+    if (currentMinRating !== '') url += `&MinRating=${encodeURIComponent(currentMinRating)}`;
+    if (currentMinPrice !== '') url += `&MinPrice=${encodeURIComponent(currentMinPrice)}`;
+    if (currentMaxPrice !== '') url += `&MaxPrice=${encodeURIComponent(currentMaxPrice)}`;
+    if (currentBrand !== '') url += `&Brand=${encodeURIComponent(currentBrand)}`;
+    if (currentInStock) url += `&InStock=true`;
+    if (sortByParam !== '') url += `&SortBy=${sortByParam}&SortDescending=${sortDescendingParam}`;
     fetch(url, {
         method: 'GET',
         headers: {
@@ -200,27 +175,20 @@ function loadProducts(
             const totalPages = result.totalPages || result.data?.totalPages || 1;
             productsContainer.innerHTML = '';
             if (products.length === 0) {
-                productsContainer.innerHTML = `<p class="no-products">Type name Properly YOU TEA TOWEL.
-⠀⠀⠀⣀⡤⠴⠶⠲⠦⢤⣀⠀⠀⠀⠀
-⠀⢠⠞⠉⠀⠀⠀⠀⠀⠀⠉⠳⡄⠀⠀
-⢠⠏⠀⠀⣤⡄⠀⠀⢠⣤⠀⠀⠹⡆⠀
-⣾⠀⠀⠀⠉⠁⠀⠀⠈⠉⠀⠀⠀⣷⠀
-⢻⠀⠀⠘⣆⠀⠀⠀⠀⣰⠇⠀⠀⡟⠃
-⠘⣧⠀⠀⠈⠓⠶⠴⠚⠁⠀⠀⣸⠃⠀
-⠀⠈⠳⣄⡀⠀⠀⠀⠀⢀⣠⠞⠁⠀⠀
-⠀⠀⠀⠀⠉⠛⠒⠒⠚⠉⠁⠀⠀⠀⠀
-                </p>`;
+                productsContainer.innerHTML = `<p class="no-products">No products found.</p>`;
                 renderPagination(1, 1);
                 return;
             }
             for (let i = 0; i < products.length; i++) {
-                const itemName = products[i].name;
-                const itemBrand = products[i].brand;
-                const itemModel = products[i].model;
-                const itemPrice = products[i].price;
-                const itemImg = products[i].imageUrl;
+                const itemId = products[i].id;
+                const itemName = products[i].name || 'Product';
+                const itemBrand = products[i].brand || '';
+                const itemModel = products[i].model || '';
+                const itemPrice = products[i].price || 0;
+                const itemImg = products[i].imageUrl || '';
                 const itemRating = Math.round(products[i].rating || 0);
                 const itemCategory = products[i].category?.name || 'Uncategorized';
+                const isFav = window.FavoritesAPI ? window.FavoritesAPI.isFavorite(itemId) : false;
                 const starsHtml = Array.from({ length: 5 }, (_, index) =>
                     `<span class="star ${index < itemRating ? 'on' : ''}">★</span>`
                 ).join('');
@@ -229,8 +197,19 @@ function loadProducts(
                     <div class="product-image product-image--dark">
                         <img src="${itemImg}" alt="${itemName}">
                         <div class="product-actions">
-                            <button type="button" class="icon-btn" aria-label="Add to wishlist">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+                            <button 
+                                type="button" 
+                                class="icon-btn wishlist-btn ${isFav ? 'active favorited' : ''}" 
+                                aria-label="Add to wishlist"
+                                data-id="${itemId}"
+                                data-name="${itemName}"
+                                data-price="${itemPrice}"
+                                data-image="${itemImg}"
+                                data-category="${itemCategory}"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path>
+                                </svg>
                             </button>
                             <button type="button" class="icon-btn" aria-label="Quick view">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -244,8 +223,16 @@ function loadProducts(
                             <span class="stars">${starsHtml}</span>
                             <span class="rating-value">${itemRating}</span>
                         </div>
-                        <p class="product-price">${itemPrice}$</p>
-                        <button type="button" class="add-to-cart-btn">
+                        <p class="product-price">$${itemPrice}</p>
+                        <button 
+                            type="button" 
+                            class="add-to-cart-btn"
+                            data-id="${itemId}"
+                            data-name="${itemName}"
+                            data-price="${itemPrice}"
+                            data-image="${itemImg}"
+                            data-category="${itemCategory}"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                             Add to Cart
                         </button>
@@ -257,7 +244,6 @@ function loadProducts(
         })
         .catch(err => console.error('Products fetch error:', err));
 }
-
 function renderPagination(currentPage, totalPages) {
     const paginationContainer = document.querySelector('.pagination');
     if (!paginationContainer) return;
@@ -269,11 +255,31 @@ function renderPagination(currentPage, totalPages) {
     html += `<button type="button" class="page-btn page-nav" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">Next</button>`;
     paginationContainer.innerHTML = html;
 }
-
 function changePage(newPage) {
     loadProducts(newPage, thisSerchInput, currentSort, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);
 }
-
+if (productsContainer) {
+    productsContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('[aria-label="Add to wishlist"]');
+        if (!btn) return;
+        const product = {
+            id: btn.dataset.id,
+            name: btn.dataset.name,
+            price: parseFloat(btn.dataset.price || 0),
+            image: btn.dataset.image,
+            category: btn.dataset.category
+        };
+        if (window.FavoritesAPI) {
+            const isNowFav = window.FavoritesAPI.toggleFavorite(product);
+            btn.classList.toggle('active', isNowFav);
+            btn.classList.toggle('favorited', isNowFav);
+            const svg = btn.querySelector('svg');
+            if (svg) {
+                svg.setAttribute('fill', isNowFav ? 'currentColor' : 'none');
+            }
+        }
+    });
+}
 if (serchBar) {
     serchBar.addEventListener('input', (e) => {
         const query = e.target.value;
@@ -290,7 +296,6 @@ if (serchBar) {
         }
     });
 }
-
 if (searchInputHeader && clearBtn) {
     searchInputHeader.addEventListener('input', () => {
         clearBtn.style.display = searchInputHeader.value.length > 0 ? 'block' : 'none';
@@ -308,7 +313,6 @@ if (searchInputHeader && clearBtn) {
         }
     });
 }
-
 if (minRatingContainer) {
     const ratingBtns = minRatingContainer.querySelectorAll('.rating-btn');
     ratingBtns.forEach(btn => {
@@ -326,7 +330,6 @@ if (minRatingContainer) {
         });
     });
 }
-
 function handlePriceInputChange() {
     clearTimeout(priceTimeOut);
     priceTimeOut = setTimeout(() => {
@@ -335,10 +338,8 @@ function handlePriceInputChange() {
         loadProducts(1, thisSerchInput, currentSort, currentCategory, currentMinRating, minVal, maxVal, currentBrand, currentInStock);
     }, 400);
 }
-
 if (minPriceInput) minPriceInput.addEventListener('input', handlePriceInputChange);
 if (maxPriceInput) maxPriceInput.addEventListener('input', handlePriceInputChange);
-
 if (brandSearchInput) {
     brandSearchInput.addEventListener('input', (e) => {
         const query = e.target.value;
@@ -355,20 +356,17 @@ if (brandSearchInput) {
         }
     });
 }
-
 if (inStockCheckbox) {
     inStockCheckbox.addEventListener('change', (e) => {
         currentInStock = e.target.checked;
         loadProducts(1, thisSerchInput, currentSort, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);
     });
 }
-
 if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
         loadProducts(1, thisSerchInput, e.target.value, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);
     });
 }
-
 if (clearFiltersBtn) {
     clearFiltersBtn.addEventListener('click', () => {
         thisSerchInput = '';
@@ -405,7 +403,6 @@ if (clearFiltersBtn) {
         loadProducts(1, '', '', '', '', '', '', '', false);
     });
 }
-
 const urlParams = new URLSearchParams(window.location.search);
 const sortFromUrl = urlParams.get('sort');
 const categoryFromUrl = urlParams.get('category');
@@ -415,7 +412,6 @@ const minPriceFromUrl = urlParams.get('minPrice');
 const maxPriceFromUrl = urlParams.get('maxPrice');
 const brandFromUrl = urlParams.get('brand');
 const inStockFromUrl = urlParams.get('inStock');
-
 if (sortFromUrl) {
     currentSort = sortFromUrl;
     if (sortSelect) sortSelect.value = sortFromUrl;
@@ -453,7 +449,6 @@ if (inStockFromUrl === 'true') {
     currentInStock = true;
     if (inStockCheckbox) inStockCheckbox.checked = true;
 }
-
 async function getUserInitials(token) {
     let firstName = localStorage.getItem('userFirstName') || '';
     let lastName = localStorage.getItem('userLastName') || '';
@@ -503,14 +498,13 @@ async function getUserInitials(token) {
     }
     return 'U';
 }
-
 async function renderShopAuthHeader() {
     const authContainer = document.getElementById('authContainer');
     if (!authContainer) return;
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
     const profilePath = './profile.html';
-    const cartPath = './cart.html';
-    const favoritesPath = './favorites.html';
+    const cartPath = './profile.html#cart';
+    const favoritesPath = './profile.html#favorites';
     const signInPath = './signin.html';
     if (token) {
         const initials = await getUserInitials(token);
@@ -537,8 +531,82 @@ async function renderShopAuthHeader() {
         `;
     }
 }
+function updateHeaderBadges() {
+    const cart = window.CartAPI ? window.CartAPI.getCart() : JSON.parse(localStorage.getItem('step_tech_cart') || '[]');
+    const favorites = window.FavoritesAPI ? window.FavoritesAPI.getFavorites() : JSON.parse(localStorage.getItem('step_tech_favorites') || '[]');
+    const totalCartCount = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+    const totalFavCount = favorites.length;
+    const cartBadge = document.getElementById('cartHeaderBadge');
+    const favBadge = document.getElementById('favHeaderBadge');
+    if (cartBadge) {
+        cartBadge.textContent = totalCartCount;
+        cartBadge.hidden = totalCartCount === 0;
+    }
+    if (favBadge) {
+        favBadge.textContent = totalFavCount;
+        favBadge.hidden = totalFavCount === 0;
+    }
+}
+async function getUserInitials(token) {
+    try {
+        const response = await fetch('/api/user/me', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+            const user = await response.json();
+            const first = user.firstName ? user.firstName.charAt(0) : '';
+            const last = user.lastName ? user.lastName.charAt(0) : '';
+            return (first + last).toUpperCase() || 'U';
+        }
+    } catch (err) {
+        console.error('Failed to retrieve user info:', err);
+    }
+    return 'U';
+}
+async function renderShopAuthHeader() {
+    const authContainer = document.getElementById('authContainer');
+    if (!authContainer) return;
+    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
+    const profilePath = './profile.html';
+    const cartPath = './profile.html#cart';
+    const favoritesPath = './profile.html#favorites';
+    const signInPath = './signin.html';
+
+    if (token) {
+        const initials = await getUserInitials(token);
+        authContainer.innerHTML = `
+            <a href="${favoritesPath}" class="header-icon-btn" id="favHeaderBtn" title="Favorites">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span class="nav-badge" id="favHeaderBadge" hidden>0</span>
+            </a>
+            <a href="${cartPath}" class="header-icon-btn" id="cartHeaderBtn" title="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span class="nav-badge" id="cartHeaderBadge" hidden>0</span>
+            </a>
+            <a href="${profilePath}" class="profile-avatar-btn" title="My Profile">${initials}</a>
+        `;
+        updateHeaderBadges();
+    } else {
+        authContainer.innerHTML = `
+            <a class="sign-in-a" href="${signInPath}">
+                <button class="sign-in-btn-element">Sign In</button>
+            </a>
+        `;
+    }
+}
+
+window.addEventListener('cart:updated', updateHeaderBadges);
+window.addEventListener('favorites:updated', updateHeaderBadges);
+document.addEventListener('DOMContentLoaded', renderShopAuthHeader);
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadCategories();
     renderShopAuthHeader();
     categoriesFilterLoad();
     loadProducts(1, thisSerchInput, currentSort, currentCategory, currentMinRating, currentMinPrice, currentMaxPrice, currentBrand, currentInStock);

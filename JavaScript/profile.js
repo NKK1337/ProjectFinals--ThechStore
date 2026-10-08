@@ -3,12 +3,8 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
 
 (() => {
     'use strict';
-
-    // Path resolution based on location
     const isInsideSubfolder = window.location.pathname.toLowerCase().includes('/html/');
     const INDEX_PATH = isInsideSubfolder ? '../index.html' : 'index.html';
-    const HTML_DIR = isInsideSubfolder ? '' : 'Html/';
-
     const CONFIG = {
         loginPage: INDEX_PATH,
         authStorageKeys: ['token', 'accessToken', 'user', 'currentUser']
@@ -20,8 +16,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         favorites: 'My Favorites',
         settings: 'Account Settings'
     };
-    const panels = document.querySelectorAll('[data-panel]');
-    const tabLinks = document.querySelectorAll('.control-panel a[data-tab]');
     const logoutBtn = document.getElementById('logoutBtn');
     const profileForm = document.getElementById('profileForm');
     const saveBtn = document.getElementById('saveBtn');
@@ -34,7 +28,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
     const deleteDialog = document.getElementById('deleteDialog');
     const deleteCancelBtn = document.getElementById('deleteCancelBtn');
     const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
-
     const fields = {
         firstName: document.getElementById('firstName'),
         lastName: document.getElementById('lastName'),
@@ -45,13 +38,13 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         avatarUrl: avatarInput
     };
     let baseline = getFormData();
-
     function getTabFromHash() {
         const name = location.hash.replace('#', '');
         return TABS.includes(name) ? name : 'profile';
     }
-
     function showTab(name) {
+        const panels = document.querySelectorAll('[data-panel]');
+        const tabLinks = document.querySelectorAll('.control-panel a[data-tab], .prf-control-panel [data-tab]');
         panels.forEach((panel) => {
             panel.hidden = panel.dataset.panel !== name;
         });
@@ -64,15 +57,15 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
                 link.removeAttribute('aria-current');
             }
         });
-        document.title = TITLES[name] + ' | Step Tech';
+        if (TITLES[name]) {
+            document.title = TITLES[name] + ' | Step Tech';
+        }
         document.dispatchEvent(new CustomEvent('tab:change', { detail: { tab: name } }));
     }
-
     window.addEventListener('hashchange', () => {
         showTab(getTabFromHash());
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -85,19 +78,17 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             window.location.href = CONFIG.loginPage;
         });
     }
-
     function showError(input, message) {
+        if (!input) return;
         const field = input.closest('.field');
         if (!field) return;
         const target = field.querySelector('[data-error-for="' + input.id + '"]');
         field.classList.toggle('has-error', Boolean(message));
         if (target) target.textContent = message || '';
     }
-
     function clearError(input) {
         showError(input, '');
     }
-
     function getFormData() {
         const data = {};
         Object.keys(fields).forEach((key) => {
@@ -107,22 +98,18 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         });
         return data;
     }
-
     function isDirty() {
         const now = getFormData();
         return Object.keys(now).some((key) => now[key] !== baseline[key]);
     }
-
     function updateButtons() {
         if (discardBtn) discardBtn.disabled = !isDirty();
     }
-
     function getInitials(first, last) {
         const a = (first || '').trim().charAt(0);
         const b = (last || '').trim().charAt(0);
         return (a + b).toUpperCase() || 'U';
     }
-
     function setAvatar(container, url) {
         if (!container) return;
         const img = container.querySelector('img');
@@ -145,7 +132,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             if (initials) initials.hidden = false;
         }
     }
-
     function updateInitials() {
         const firstNameVal = fields.firstName ? fields.firstName.value : '';
         const lastNameVal = fields.lastName ? fields.lastName.value : '';
@@ -154,7 +140,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             el.textContent = text;
         });
     }
-
     function validateProfile() {
         let valid = true;
         ['firstName', 'lastName'].forEach((name) => {
@@ -174,7 +159,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         }
         return valid;
     }
-
     if (profileForm) {
         profileForm.addEventListener('input', (e) => {
             if (e.target === avatarInput && photoPreview) {
@@ -194,7 +178,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             setTimeout(() => { if (saveBtn) saveBtn.disabled = false; }, 600);
         });
     }
-
     if (discardBtn) {
         discardBtn.addEventListener('click', () => {
             Object.keys(fields).forEach((key) => {
@@ -208,13 +191,11 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             updateButtons();
         });
     }
-
     const pw = {
         current: document.getElementById('currentPassword'),
         next: document.getElementById('newPassword'),
         confirm: document.getElementById('confirmPassword')
     };
-
     if (passwordForm) {
         passwordForm.addEventListener('click', (e) => {
             const btn = e.target.closest('.toggle-eye');
@@ -242,7 +223,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             setTimeout(() => { if (updatePasswordBtn) updatePasswordBtn.disabled = false; }, 600);
         });
     }
-
     function validatePassword() {
         let valid = true;
         if (!pw.current || !pw.current.value) {
@@ -268,7 +248,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         }
         return valid;
     }
-
     function resetPasswordForm() {
         if (!passwordForm) return;
         passwordForm.reset();
@@ -283,7 +262,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         });
         if (updatePasswordBtn) updatePasswordBtn.disabled = false;
     }
-
     function openDeleteDialog() {
         if (!deleteDialog) return;
         if (typeof deleteDialog.showModal === 'function') {
@@ -292,12 +270,10 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             confirmDelete();
         }
     }
-
     function confirmDelete() {
         if (deleteDialog && deleteDialog.open) deleteDialog.close();
         document.dispatchEvent(new CustomEvent('account:delete'));
     }
-
     if (deleteBtn) deleteBtn.addEventListener('click', openDeleteDialog);
     if (deleteCancelBtn) deleteCancelBtn.addEventListener('click', () => deleteDialog && deleteDialog.close());
     if (deleteConfirmBtn) deleteConfirmBtn.addEventListener('click', confirmDelete);
@@ -306,12 +282,10 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             if (e.target === deleteDialog) deleteDialog.close();
         });
     }
-
     const COUNT_TEXT = {
         cart: (n) => n + (n === 1 ? ' item' : ' items') + ' in your cart',
         favorites: (n) => n + (n === 1 ? ' item' : ' items') + ' saved'
     };
-
     function setCount(type, count) {
         const n = Number(count) || 0;
         const label = document.querySelector('[data-count="' + type + '"]');
@@ -321,7 +295,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         if (list) list.hidden = n === 0;
         if (empty) empty.hidden = n > 0;
     }
-
     window.ProfilePage = {
         setUser(user = {}) {
             const set = (key, value) => { if (fields[key]) fields[key].value = value || ''; };
@@ -357,44 +330,33 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             if (TABS.includes(name)) location.hash = name;
         }
     };
-
     showTab(getTabFromHash());
     updateInitials();
     updateButtons();
 })();
-
 document.addEventListener('DOMContentLoaded', () => {
     const isInsideSubfolder = window.location.pathname.toLowerCase().includes('/html/');
-    const INDEX_PATH = isInsideSubfolder ? '../index.html' : 'index.html';
     const HTML_DIR = isInsideSubfolder ? '' : 'Html/';
-
     const categoriesDropdown = document.getElementById('categoriesDropdown');
     const searchInputHeader = document.getElementById('searchInputHeader');
     const clearBtn = document.getElementById('clearBtn');
     const hamburgerBtn = document.getElementById('hamburgerBtn');
     const navList = document.getElementById('navList');
     const menuOverlay = document.getElementById('menuOverlay');
-
     const navButtons = document.querySelectorAll('.prf-control-panel [data-tab]');
-    const tabPanels = document.querySelectorAll('.prf-tab-panel');
     const profileForm = document.getElementById('profileForm');
     const passwordForm = document.getElementById('passwordForm');
     const discardBtn = document.getElementById('discardBtn');
     const avatarInput = document.getElementById('avatarUrl');
     const photoPreview = document.getElementById('photoPreview');
-
-    // Renders the Auth Header Container (Favorites, Cart, and Circular Green Avatar)
     function renderHeaderAuth() {
         const authContainer = document.getElementById('authContainer') || document.querySelector('.auth-header-container');
         if (!authContainer) return;
-
         const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
         const isLoggedIn = Boolean(token || currentUser.email);
-
         if (isLoggedIn) {
             const initial = (currentUser.firstName ? currentUser.firstName.charAt(0) : (currentUser.email ? currentUser.email.charAt(0) : 'U')).toUpperCase();
-
             authContainer.innerHTML = `
                 <div class="hdr-actions" style="display: flex; align-items: center; gap: 12px;">
                     <a href="${HTML_DIR}profile.html#favorites" class="hdr-action-btn" title="Favorites">
@@ -425,7 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
     }
-
     async function loadCategories() {
         if (!categoriesDropdown) return;
         try {
@@ -457,7 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
             categoriesDropdown.innerHTML = '<li class="hdr-dropdown-error">Failed to load categories</li>';
         }
     }
-
     function initHeaderSearch() {
         if (!searchInputHeader) return;
         const toggleClearBtn = () => {
@@ -483,7 +443,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     function initMobileMenu() {
         if (!hamburgerBtn || !navList) return;
         const toggleMenu = () => {
@@ -495,35 +454,15 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburgerBtn.addEventListener('click', toggleMenu);
         if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
     }
-
-    function switchTab(targetTab) {
-        navButtons.forEach(btn => {
-            const isTarget = btn.getAttribute('data-tab') === targetTab;
-            btn.classList.toggle('active', isTarget);
-        });
-        tabPanels.forEach(panel => {
-            const isTarget = panel.getAttribute('data-panel') === targetTab;
-            panel.hidden = !isTarget;
-        });
-        window.location.hash = targetTab;
-    }
-
     function initTabNavigation() {
         navButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetTab = btn.getAttribute('data-tab');
-                switchTab(targetTab);
+                window.location.hash = targetTab;
             });
         });
-        const initialHash = window.location.hash.replace('#', '');
-        if (initialHash && document.querySelector(`[data-panel="${initialHash}"]`)) {
-            switchTab(initialHash);
-        } else {
-            switchTab('profile');
-        }
     }
-
     function loadUserData() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
         const nameElements = document.querySelectorAll('[data-user-name]');
@@ -565,7 +504,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (profileForm.elements['avatarUrl']) profileForm.elements['avatarUrl'].value = currentUser.avatarUrl || '';
         }
     }
-
     function initFormInteractions() {
         if (!profileForm) return;
         profileForm.addEventListener('input', () => {
@@ -607,7 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('currentUser', JSON.stringify(updatedUser));
             if (discardBtn) discardBtn.disabled = true;
             loadUserData();
-            renderHeaderAuth(); // Refresh header avatar on profile update
+            renderHeaderAuth();
             alert('Profile updated successfully!');
         });
         if (passwordForm) {
@@ -641,7 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
     renderHeaderAuth();
     loadCategories();
     initHeaderSearch();

@@ -1,6 +1,8 @@
 const API_KEY = 'ebbee9bb-1884-43ad-ae71-afa71ea9460e';
 const BASE_URL = 'https://shopapi.stepacademy.ge';
 
+let loadedProductsMap = new Map();
+
 document.addEventListener('DOMContentLoaded', () => {
     renderAuthHeader();
     loadCategories();
@@ -8,21 +10,103 @@ document.addEventListener('DOMContentLoaded', () => {
     loadFeaturedProducts();
     loadNewArrivals();
     highlightCurrentNav();
+    setupProductActionListeners();
 });
 
-// Helper function to dynamically retrieve user initials
+function updateHeaderBadges() {
+    const cart = window.CartAPI ? window.CartAPI.getCart() : JSON.parse(localStorage.getItem('step_tech_cart') || '[]');
+    const favorites = window.FavoritesAPI ? window.FavoritesAPI.getFavorites() : JSON.parse(localStorage.getItem('step_tech_favorites') || '[]');
+    const totalCartCount = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+    const totalFavCount = favorites.length;
+    const cartBadge = document.getElementById('cartHeaderBadge');
+    const favBadge = document.getElementById('favHeaderBadge');
+    if (cartBadge) {
+        cartBadge.textContent = totalCartCount;
+        cartBadge.hidden = totalCartCount === 0;
+    }
+    if (favBadge) {
+        favBadge.textContent = totalFavCount;
+        favBadge.hidden = totalFavCount === 0;
+    }
+}
+
+window.addEventListener('cart:updated', updateHeaderBadges);
+window.addEventListener('favorites:updated', updateHeaderBadges);
+
+function setupProductActionListeners() {
+    document.addEventListener('click', (e) => {
+        const cartBtn = e.target.closest('.featured-card-cart, .new-arrival-cart');
+        if (cartBtn) {
+            e.preventDefault();
+            const productId = cartBtn.dataset.productId;
+            const product = loadedProductsMap.get(productId);
+            if (product) {
+                const itemToAdd = {
+                    id: product.id,
+                    name: product.name,
+                    price: Number(product.price || 0),
+                    image: product.imageUrl || product.image || (product.images && product.images[0]) || '',
+                    category: pickName(product.categoryName || product.category)
+                };
+                if (window.CartAPI && typeof window.CartAPI.addItem === 'function') {
+                    window.CartAPI.addItem(itemToAdd);
+                } else if (window.CartAPI && typeof window.CartAPI.addToCart === 'function') {
+                    window.CartAPI.addToCart(itemToAdd);
+                } else {
+                    const cart = JSON.parse(localStorage.getItem('step_tech_cart') || '[]');
+                    const existing = cart.find(i => String(i.id) === String(itemToAdd.id));
+                    if (existing) {
+                        existing.quantity = (existing.quantity || 1) + 1;
+                    } else {
+                        cart.push({ ...itemToAdd, quantity: 1 });
+                    }
+                    localStorage.setItem('step_tech_cart', JSON.stringify(cart));
+                    window.dispatchEvent(new CustomEvent('cart:updated'));
+                }
+            }
+            return;
+        }
+        const favBtn = e.target.closest('.featured-card-action[aria-label="Add to wishlist"], .new-arrival-action[aria-label="Add to wishlist"]');
+        if (favBtn) {
+            e.preventDefault();
+            const cardElem = favBtn.closest('.featured-card, .new-arrival-card');
+            if (!cardElem) return;
+            const productId = cardElem.dataset.productId;
+            const product = loadedProductsMap.get(productId);
+            if (product) {
+                const itemToFav = {
+                    id: product.id,
+                    name: product.name,
+                    price: Number(product.price || 0),
+                    image: product.imageUrl || product.image || (product.images && product.images[0]) || '',
+                    category: pickName(product.categoryName || product.category)
+                };
+                if (window.FavoritesAPI && typeof window.FavoritesAPI.toggleFavorite === 'function') {
+                    window.FavoritesAPI.toggleFavorite(itemToFav);
+                } else {
+                    let favorites = JSON.parse(localStorage.getItem('step_tech_favorites') || '[]');
+                    const index = favorites.findIndex(i => String(i.id) === String(itemToFav.id));
+                    if (index > -1) {
+                        favorites.splice(index, 1);
+                    } else {
+                        favorites.push(itemToFav);
+                    }
+                    localStorage.setItem('step_tech_favorites', JSON.stringify(favorites));
+                    window.dispatchEvent(new CustomEvent('favorites:updated'));
+                }
+            }
+        }
+    });
+}
+
 async function getUserInitials(token) {
     let firstName = localStorage.getItem('userFirstName') || '';
     let lastName = localStorage.getItem('userLastName') || '';
-
-    // 1. Return saved initials if available
     if (firstName || lastName) {
         const f = firstName ? firstName.trim().charAt(0).toUpperCase() : '';
         const l = lastName ? lastName.trim().charAt(0).toUpperCase() : '';
         return `${f}${l}` || 'U';
     }
-
-    // 2. Try fetching current user profile from API
     if (token) {
         try {
             const response = await fetch(`${BASE_URL}/api/auth/current-user`, {
@@ -33,15 +117,12 @@ async function getUserInitials(token) {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
             if (response.ok) {
                 const userData = await response.json();
                 firstName = userData.firstName || userData.first_name || '';
                 lastName = userData.lastName || userData.last_name || '';
-
                 if (firstName) localStorage.setItem('userFirstName', firstName);
                 if (lastName) localStorage.setItem('userLastName', lastName);
-
                 const f = firstName ? firstName.trim().charAt(0).toUpperCase() : '';
                 const l = lastName ? lastName.trim().charAt(0).toUpperCase() : '';
                 if (f || l) return `${f}${l}`;
@@ -49,13 +130,10 @@ async function getUserInitials(token) {
         } catch (err) {
             console.error('Error fetching current user:', err);
         }
-
-        // 3. Fallback: Try parsing JWT payload directly
         try {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
             const payload = JSON.parse(window.atob(base64));
-
             const name = payload.name || payload.unique_name || payload.sub || '';
             if (name) {
                 const parts = name.trim().split(' ');
@@ -67,7 +145,6 @@ async function getUserInitials(token) {
             console.error('Error parsing token:', e);
         }
     }
-
     return 'U';
 }
 
@@ -75,32 +152,32 @@ async function getUserInitials(token) {
 async function renderAuthHeader() {
     const authContainer = document.getElementById('authContainer');
     if (!authContainer) return;
-
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
     const isInHtmlFolder = window.location.pathname.includes('/Html/') || window.location.pathname.includes('/html/');
-    const profilePath = isInHtmlFolder ? './profile.html' : './html/profile.html';
-    const cartPath = isInHtmlFolder ? './cart.html' : './html/cart.html';
-    const favoritesPath = isInHtmlFolder ? './favorites.html' : './html/favorites.html';
-    const signInPath = isInHtmlFolder ? './signin.html' : './html/signin.html';
-
+    const profilePath = isInHtmlFolder ? './profile.html' : './Html/profile.html';
+    const cartPath = isInHtmlFolder ? './profile.html#cart' : './Html/profile.html#cart';
+    const favoritesPath = isInHtmlFolder ? './profile.html#favorites' : './Html/profile.html#favorites';
+    const signInPath = isInHtmlFolder ? './signin.html' : './Html/signin.html';
     if (token) {
         const initials = await getUserInitials(token);
-
         authContainer.innerHTML = `
-            <a href="${favoritesPath}" class="header-icon-btn" title="Favorites">
+            <a href="${favoritesPath}" class="header-icon-btn" id="favHeaderBtn" title="Favorites">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                 </svg>
+                <span class="nav-badge" id="favHeaderBadge" hidden>0</span>
             </a>
-            <a href="${cartPath}" class="header-icon-btn" title="Cart">
+            <a href="${cartPath}" class="header-icon-btn" id="cartHeaderBtn" title="Cart">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle>
                     <circle cx="20" cy="21" r="1"></circle>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                 </svg>
+                <span class="nav-badge" id="cartHeaderBadge" hidden>0</span>
             </a>
             <a href="${profilePath}" class="profile-avatar-btn" title="My Profile">${initials}</a>
         `;
+        updateHeaderBadges();
     } else {
         authContainer.innerHTML = `
             <a class="sign-in-a" href="${signInPath}">
@@ -114,7 +191,6 @@ async function renderAuthHeader() {
 async function loadCategories() {
     const dropdown = document.getElementById('categoriesDropdown');
     if (!dropdown) return;
-
     try {
         const response = await fetch(`${BASE_URL}/api/categories`, {
             method: 'GET',
@@ -126,15 +202,12 @@ async function loadCategories() {
         if (!response.ok) throw new Error('Request failed');
         const result = await response.json();
         const categories = result.data;
-
         if (!categories || categories.length === 0) {
             dropdown.innerHTML = '<li class="dropdown-empty">No categories found</li>';
             return;
         }
-
         const isInHtmlFolder = window.location.pathname.includes('/Html/') || window.location.pathname.includes('/html/');
-        const shopPath = isInHtmlFolder ? './shop.html' : './html/shop.html';
-
+        const shopPath = isInHtmlFolder ? './shop.html' : './Html/shop.html';
         dropdown.innerHTML = categories.map(category => `
             <li>
                 <a href="${shopPath}?category=${category.id}">
@@ -157,20 +230,18 @@ if (searchInputHeader && clearBtn) {
     searchInputHeader.addEventListener('input', () => {
         clearBtn.style.display = searchInputHeader.value.length > 0 ? 'block' : 'none';
     });
-
     clearBtn.addEventListener('click', () => {
         searchInputHeader.value = '';
         clearBtn.style.display = 'none';
         searchInputHeader.focus();
     });
-
     searchInputHeader.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             const query = searchInputHeader.value.trim();
             if (query) {
                 const isInHtmlFolder = window.location.pathname.includes('/Html/') || window.location.pathname.includes('/html/');
-                const shopPath = isInHtmlFolder ? './shop.html' : './html/shop.html';
+                const shopPath = isInHtmlFolder ? './shop.html' : './Html/shop.html';
                 window.location.href = `${shopPath}?search=${encodeURIComponent(query)}`;
             }
         }
@@ -194,7 +265,6 @@ function highlightCurrentNav() {
 async function loadCategoryCards() {
     const categoryCards = document.getElementById('category-cards');
     if (!categoryCards) return;
-
     try {
         const response = await fetch(`${BASE_URL}/api/categories`, {
             method: 'GET',
@@ -206,15 +276,12 @@ async function loadCategoryCards() {
         if (!response.ok) throw new Error('Request failed');
         const result = await response.json();
         const categories = (result.data || []).slice(0, 4);
-
         if (categories.length === 0) {
             categoryCards.innerHTML = '<p>No categories found</p>';
             return;
         }
-
         const isInHtmlFolder = window.location.pathname.includes('/Html/') || window.location.pathname.includes('/html/');
-        const shopPath = isInHtmlFolder ? './shop.html' : './html/shop.html';
-
+        const shopPath = isInHtmlFolder ? './shop.html' : './Html/shop.html';
         categoryCards.innerHTML = categories.map(category => `
             <a href="${shopPath}?category=${category.id}" class="category-card">
                 <div class="category-card-img">
@@ -237,7 +304,6 @@ async function loadCategoryCards() {
     }
 }
 
-// Helpers for products
 function pickName(value) {
     if (!value) return '';
     return typeof value === 'object' ? (value.name || '') : value;
@@ -260,7 +326,6 @@ function renderStars(rating) {
 async function loadFeaturedProducts() {
     const featuredCards = document.getElementById('featured-cards');
     if (!featuredCards) return;
-
     try {
         const response = await fetch(`${BASE_URL}/api/products`, {
             method: 'GET',
@@ -275,19 +340,17 @@ async function loadFeaturedProducts() {
         const products = [...list]
             .sort((a, b) => Number(b.rating ?? b.averageRating ?? 0) - Number(a.rating ?? a.averageRating ?? 0))
             .slice(0, 4);
-
         if (products.length === 0) {
             featuredCards.innerHTML = '<p>No products found</p>';
             return;
         }
-
+        products.forEach(p => loadedProductsMap.set(String(p.id), p));
         featuredCards.innerHTML = products.map(product => {
             const image = product.imageUrl || product.image || (product.images && product.images[0]) || '';
             const category = pickName(product.categoryName || product.category);
             const brand = pickName(product.brandName || product.brand);
             const rating = Number(product.rating ?? product.averageRating ?? 0);
             const price = Number(product.price || 0).toLocaleString('en-US');
-
             return `
             <div class="featured-card" data-product-id="${product.id}">
                 <div class="featured-card-img">
@@ -342,7 +405,6 @@ async function loadFeaturedProducts() {
 async function loadNewArrivals() {
     const newArrivalsCards = document.getElementById('new-arrivals-cards');
     if (!newArrivalsCards) return;
-
     try {
         const response = await fetch(`${BASE_URL}/api/products`, {
             method: 'GET',
@@ -358,19 +420,17 @@ async function loadNewArrivals() {
             .filter(p => pickName(p.categoryName || p.category).toLowerCase() === 'storage')
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .slice(0, 4);
-
         if (products.length === 0) {
             newArrivalsCards.innerHTML = '<p>No products found</p>';
             return;
         }
-
+        products.forEach(p => loadedProductsMap.set(String(p.id), p));
         newArrivalsCards.innerHTML = products.map(product => {
             const image = product.imageUrl || product.image || (product.images && product.images[0]) || '';
             const category = pickName(product.categoryName || product.category);
             const brand = pickName(product.brandName || product.brand);
             const rating = Number(product.rating ?? product.averageRating ?? 0);
             const price = Number(product.price || 0).toLocaleString('en-US');
-
             return `
             <div class="new-arrival-card" data-product-id="${product.id}">
                 <div class="new-arrival-img">
