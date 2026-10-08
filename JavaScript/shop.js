@@ -600,6 +600,18 @@ async function renderShopAuthHeader() {
         `;
     }
 }
+if (productsContainer) {
+    productsContainer.addEventListener('click', (e) => {
+        if (e.target.closest('.add-to-cart-btn, .icon-btn')) return;
+        const card = e.target.closest('.product-card');
+        if (!card) return;
+        const wishlistBtn = card.querySelector('[aria-label="Add to wishlist"]');
+        const productId = wishlistBtn ? wishlistBtn.dataset.id : null;
+        if (productId) {
+            window.location.href = `./itempage.html?id=${productId}`;
+        }
+    });
+}
 
 window.addEventListener('cart:updated', updateHeaderBadges);
 window.addEventListener('favorites:updated', updateHeaderBadges);

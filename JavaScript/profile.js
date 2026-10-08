@@ -5,9 +5,10 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
     'use strict';
     const isInsideSubfolder = window.location.pathname.toLowerCase().includes('/html/');
     const INDEX_PATH = isInsideSubfolder ? '../index.html' : 'index.html';
+    const SIGNIN_PATH = isInsideSubfolder ? 'signin.html' : 'Html/signin.html';
     const CONFIG = {
-        loginPage: INDEX_PATH,
-        authStorageKeys: ['token', 'accessToken', 'user', 'currentUser']
+        loginPage: SIGNIN_PATH,
+        authStorageKeys: ['token', 'accessToken', 'user', 'currentUser', 'userFirstName', 'userLastName']
     };
     const TABS = ['profile', 'cart', 'favorites', 'settings'];
     const TITLES = {
@@ -37,7 +38,21 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         address: document.getElementById('address'),
         avatarUrl: avatarInput
     };
-    let baseline = getFormData();
+    let baseline = {};
+    function getToken() {
+        return localStorage.getItem('accessToken') || localStorage.getItem('token');
+    }
+    function getAuthHeaders() {
+        const token = getToken();
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-API-KEY': API_KEY
+        };
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        return headers;
+    }
     function getTabFromHash() {
         const name = location.hash.replace('#', '');
         return TABS.includes(name) ? name : 'profile';
@@ -69,18 +84,17 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             CONFIG.authStorageKeys.forEach((key) => {
                 localStorage.removeItem(key);
                 sessionStorage.removeItem(key);
             });
             sessionStorage.clear();
-            window.location.href = CONFIG.loginPage;
+            window.location.href = INDEX_PATH;
         });
     }
     function showError(input, message) {
         if (!input) return;
-        const field = input.closest('.field');
+        const field = input.closest('.prf-field') || input.closest('.field');
         if (!field) return;
         const target = field.querySelector('[data-error-for="' + input.id + '"]');
         field.classList.toggle('has-error', Boolean(message));
@@ -100,7 +114,7 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
     }
     function isDirty() {
         const now = getFormData();
-        return Object.keys(now).some((key) => now[key] !== baseline[key]);
+        return Object.keys(now).some((key) => now[key] !== (baseline[key] || ''));
     }
     function updateButtons() {
         if (discardBtn) discardBtn.disabled = !isDirty();
@@ -140,6 +154,103 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             el.textContent = text;
         });
     }
+    async function loadUserProfile() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = SIGNIN_PATH;
+            return;
+        }
+        try {
+            const response = await fetch(`${BASE_URL}/api/users/me`, {
+                method: 'GET',
+                headers: getAuthHeaders()
+            });
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = SIGNIN_PATH;
+                    return;
+                }
+                throw new Error('Failed to load profile details');
+            }
+            const userData = await response.json();
+            populateUserData(userData);
+        } catch (err) {
+            console.error('Profile fetch error:', err);
+        }
+    }
+    function populateUserData(user = {}) {
+        const details = user.details || {};
+        if (fields.firstName) fields.firstName.value = user.firstName || '';
+        if (fields.lastName) fields.lastName.value = user.lastName || '';
+        if (fields.email) fields.email.value = user.email || '';
+        if (fields.phone) fields.phone.value = details.phoneNumber || user.phoneNumber || '';
+        if (fields.address) fields.address.value = details.address || user.address || '';
+        if (fields.avatarUrl) fields.avatarUrl.value = details.pictureUrl || user.pictureUrl || '';
+        const dob = details.dob || user.dateOfBirth || user.dob || '';
+        if (fields.birthDate) fields.birthDate.value = dob ? String(dob).slice(0, 10) : '';
+        const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+        document.querySelectorAll('[data-user-name]').forEach((el) => {
+            el.textContent = fullName || 'User Name';
+        });
+        document.querySelectorAll('[data-user-email]').forEach((el) => {
+            el.textContent = user.email || '';
+        });
+        localStorage.setItem('userFirstName', user.firstName || '');
+        localStorage.setItem('userLastName', user.lastName || '');
+        updateInitials();
+        const pic = details.pictureUrl || user.pictureUrl || '';
+        setAvatar(document.querySelector('[data-user-avatar]'), pic);
+        if (photoPreview) setAvatar(photoPreview, pic);
+        baseline = getFormData();
+        updateButtons();
+    }
+    async function saveUserProfile(e) {
+        e.preventDefault();
+        if (!validateProfile()) return;
+        if (saveBtn) saveBtn.disabled = true;
+
+        const dobVal = fields.birthDate && fields.birthDate.value
+            ? new Date(fields.birthDate.value).toISOString()
+            : new Date("2000-01-01").toISOString();
+
+        const payload = {
+            firstName: fields.firstName.value.trim(),
+            lastName: fields.lastName.value.trim(),
+            email: fields.email.value.trim(),
+            phoneNumber: fields.phone ? fields.phone.value.trim() : '',
+            address: fields.address ? fields.address.value.trim() : '',
+            pictureUrl: fields.avatarUrl ? fields.avatarUrl.value.trim() : '',
+            dateOfBirth: dobVal
+        };
+
+        try {
+            const response = await fetch(`${BASE_URL}/api/users`, {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                let msg = 'Failed to update profile';
+                try {
+                    const parsed = JSON.parse(errText);
+                    msg = parsed.detail || parsed.message || msg;
+                } catch (pErr) {
+                    msg = errText || msg;
+                }
+                throw new Error(msg);
+            }
+
+            alert('Profile updated successfully!');
+            await loadUserProfile();
+        } catch (err) {
+            console.error('Update profile error:', err);
+            alert(err.message);
+        } finally {
+            if (saveBtn) saveBtn.disabled = false;
+        }
+    }
     function validateProfile() {
         let valid = true;
         ['firstName', 'lastName'].forEach((name) => {
@@ -150,13 +261,6 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
                 clearError(fields[name]);
             }
         });
-        const phone = fields.phone ? fields.phone.value.trim() : '';
-        if (phone && !/^\+?[0-9\s\-()]{7,20}$/.test(phone)) {
-            showError(fields.phone, 'Enter a valid phone number');
-            valid = false;
-        } else if (fields.phone) {
-            clearError(fields.phone);
-        }
         return valid;
     }
     if (profileForm) {
@@ -170,13 +274,7 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             if (e.target.id) clearError(e.target);
             updateButtons();
         });
-        profileForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (!validateProfile()) return;
-            if (saveBtn) saveBtn.disabled = true;
-            document.dispatchEvent(new CustomEvent('profile:save', { detail: getFormData() }));
-            setTimeout(() => { if (saveBtn) saveBtn.disabled = false; }, 600);
-        });
+        profileForm.addEventListener('submit', saveUserProfile);
     }
     if (discardBtn) {
         discardBtn.addEventListener('click', () => {
@@ -198,7 +296,7 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
     };
     if (passwordForm) {
         passwordForm.addEventListener('click', (e) => {
-            const btn = e.target.closest('.toggle-eye');
+            const btn = e.target.closest('.prf-toggle-eye, .toggle-eye');
             if (!btn) return;
             const input = btn.parentElement.querySelector('input');
             const use = btn.querySelector('use');
@@ -210,17 +308,32 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         passwordForm.addEventListener('input', (e) => {
             if (e.target.id) clearError(e.target);
         });
-        passwordForm.addEventListener('submit', (e) => {
+        passwordForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!validatePassword()) return;
             if (updatePasswordBtn) updatePasswordBtn.disabled = true;
-            document.dispatchEvent(new CustomEvent('password:update', {
-                detail: {
-                    currentPassword: pw.current.value,
-                    newPassword: pw.next.value
+            const payload = {
+                currentPassword: pw.current.value,
+                newPassword: pw.next.value
+            };
+            try {
+                const response = await fetch(`${BASE_URL}/api/users/change-password`, {
+                    method: 'PUT',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(errText || 'Current password incorrect');
                 }
-            }));
-            setTimeout(() => { if (updatePasswordBtn) updatePasswordBtn.disabled = false; }, 600);
+                alert('Password changed successfully!');
+                resetPasswordForm();
+            } catch (err) {
+                console.error('Password change error:', err);
+                alert('Password change failed: ' + err.message);
+            } finally {
+                if (updatePasswordBtn) updatePasswordBtn.disabled = false;
+            }
         });
     }
     function validatePassword() {
@@ -236,7 +349,7 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             showError(pw.next, 'Password must be at least 8 characters');
             valid = false;
         } else if (pw.current && pw.next.value === pw.current.value) {
-            showError(pw.next, 'New password must be different from the current one');
+            showError(pw.next, 'New password must be different from current password');
             valid = false;
         }
         if (!pw.confirm || !pw.confirm.value) {
@@ -255,7 +368,7 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             input.type = 'password';
             clearError(input);
         });
-        passwordForm.querySelectorAll('.toggle-eye').forEach((btn) => {
+        passwordForm.querySelectorAll('.prf-toggle-eye, .toggle-eye').forEach((btn) => {
             const use = btn.querySelector('use');
             if (use) use.setAttribute('href', '#i-eye');
             btn.setAttribute('aria-label', 'Show password');
@@ -270,9 +383,24 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
             confirmDelete();
         }
     }
-    function confirmDelete() {
+    async function confirmDelete() {
         if (deleteDialog && deleteDialog.open) deleteDialog.close();
-        document.dispatchEvent(new CustomEvent('account:delete'));
+        try {
+            const response = await fetch(`${BASE_URL}/api/users/delete-profile`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(errText || 'Failed to delete account');
+            }
+            alert('Account deleted successfully.');
+            CONFIG.authStorageKeys.forEach((key) => localStorage.removeItem(key));
+            window.location.href = INDEX_PATH;
+        } catch (err) {
+            console.error('Delete account error:', err);
+            alert('Failed to delete account: ' + err.message);
+        }
     }
     if (deleteBtn) deleteBtn.addEventListener('click', openDeleteDialog);
     if (deleteCancelBtn) deleteCancelBtn.addEventListener('click', () => deleteDialog && deleteDialog.close());
@@ -296,43 +424,14 @@ const BASE_URL = 'https://shopapi.stepacademy.ge';
         if (empty) empty.hidden = n > 0;
     }
     window.ProfilePage = {
-        setUser(user = {}) {
-            const set = (key, value) => { if (fields[key]) fields[key].value = value || ''; };
-            set('firstName', user.firstName);
-            set('lastName', user.lastName);
-            set('email', user.email);
-            set('birthDate', user.birthDate ? String(user.birthDate).slice(0, 10) : '');
-            set('phone', user.phone);
-            set('address', user.address);
-            set('avatarUrl', user.avatarUrl);
-            const fullName = ((user.firstName || '') + ' ' + (user.lastName || '')).trim();
-            document.querySelectorAll('[data-user-name]').forEach((el) => {
-                el.textContent = fullName || 'User Name';
-            });
-            document.querySelectorAll('[data-user-email]').forEach((el) => {
-                el.textContent = user.email || '';
-            });
-            updateInitials();
-            setAvatar(document.querySelector('[data-user-avatar]'), user.avatarUrl || '');
-            if (photoPreview) setAvatar(photoPreview, user.avatarUrl || '');
-            baseline = getFormData();
-            updateButtons();
-        },
-        getFormData,
-        markSaved() {
-            baseline = getFormData();
-            if (saveBtn) saveBtn.disabled = false;
-            updateButtons();
-        },
-        passwordUpdated: resetPasswordForm,
+        loadUserProfile,
         setCount,
         goTo(name) {
             if (TABS.includes(name)) location.hash = name;
         }
     };
     showTab(getTabFromHash());
-    updateInitials();
-    updateButtons();
+    loadUserProfile();
 })();
 document.addEventListener('DOMContentLoaded', () => {
     const isInsideSubfolder = window.location.pathname.toLowerCase().includes('/html/');
@@ -344,19 +443,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const navList = document.getElementById('navList');
     const menuOverlay = document.getElementById('menuOverlay');
     const navButtons = document.querySelectorAll('.prf-control-panel [data-tab]');
-    const profileForm = document.getElementById('profileForm');
-    const passwordForm = document.getElementById('passwordForm');
-    const discardBtn = document.getElementById('discardBtn');
-    const avatarInput = document.getElementById('avatarUrl');
-    const photoPreview = document.getElementById('photoPreview');
     function renderHeaderAuth() {
-        const authContainer = document.getElementById('authContainer') || document.querySelector('.auth-header-container');
+        const authContainer = document.getElementById('authContainer') || document.querySelector('.hdr-auth-container');
         if (!authContainer) return;
         const token = localStorage.getItem('token') || localStorage.getItem('accessToken');
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-        const isLoggedIn = Boolean(token || currentUser.email);
+        const isLoggedIn = Boolean(token);
         if (isLoggedIn) {
-            const initial = (currentUser.firstName ? currentUser.firstName.charAt(0) : (currentUser.email ? currentUser.email.charAt(0) : 'U')).toUpperCase();
+            const firstName = localStorage.getItem('userFirstName') || '';
+            const lastName = localStorage.getItem('userLastName') || '';
+            const initial = ((firstName ? firstName.charAt(0) : '') + (lastName ? lastName.charAt(0) : '')).toUpperCase() || 'U';
             authContainer.innerHTML = `
                 <div class="hdr-actions" style="display: flex; align-items: center; gap: 12px;">
                     <a href="${HTML_DIR}profile.html#favorites" class="hdr-action-btn" title="Favorites">
@@ -372,17 +467,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         </svg>
                     </a>
                     <a href="${HTML_DIR}profile.html" class="hdr-avatar-btn" title="My Profile">
-                        ${currentUser.avatarUrl
-                    ? `<img src="${currentUser.avatarUrl}" alt="Profile" class="hdr-avatar-img">`
-                    : `<span class="hdr-avatar-initial">${initial}</span>`
-                }
+                        <span class="hdr-avatar-initial">${initial}</span>
                     </a>
                 </div>
             `;
         } else {
             authContainer.innerHTML = `
-                <a class="sign-in-a" href="${HTML_DIR}signin.html">
-                    <button class="sign-in-btn-element">Sign In</button>
+                <a class="hdr-sign-in-a" href="${HTML_DIR}signin.html">
+                    <button class="hdr-sign-in-btn">Sign In</button>
                 </a>
             `;
         }
@@ -463,127 +555,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-    function loadUserData() {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-        const nameElements = document.querySelectorAll('[data-user-name]');
-        const emailElements = document.querySelectorAll('[data-user-email]');
-        const initialsElements = document.querySelectorAll('[data-user-initials]');
-        const avatarContainers = document.querySelectorAll('[data-user-avatar]');
-        const fullName = `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim() || 'User Name';
-        const initials = `${(currentUser.firstName || 'U')[0]}${(currentUser.lastName || '')[0] || ''}`.toUpperCase();
-        nameElements.forEach(el => el.textContent = fullName);
-        emailElements.forEach(el => el.textContent = currentUser.email || 'user@email.com');
-        initialsElements.forEach(el => el.textContent = initials);
-        if (currentUser.avatarUrl) {
-            avatarContainers.forEach(container => {
-                const img = container.querySelector('img');
-                const span = container.querySelector('span');
-                if (img) {
-                    img.src = currentUser.avatarUrl;
-                    img.hidden = false;
-                }
-                if (span) span.hidden = true;
-            });
-            if (photoPreview) {
-                const previewImg = photoPreview.querySelector('img');
-                const previewSpan = photoPreview.querySelector('span');
-                if (previewImg) {
-                    previewImg.src = currentUser.avatarUrl;
-                    previewImg.hidden = false;
-                }
-                if (previewSpan) previewSpan.hidden = true;
-            }
-        }
-        if (profileForm) {
-            if (profileForm.elements['firstName']) profileForm.elements['firstName'].value = currentUser.firstName || '';
-            if (profileForm.elements['lastName']) profileForm.elements['lastName'].value = currentUser.lastName || '';
-            if (profileForm.elements['email']) profileForm.elements['email'].value = currentUser.email || '';
-            if (profileForm.elements['birthDate']) profileForm.elements['birthDate'].value = currentUser.birthDate || '';
-            if (profileForm.elements['phone']) profileForm.elements['phone'].value = currentUser.phone || '';
-            if (profileForm.elements['address']) profileForm.elements['address'].value = currentUser.address || '';
-            if (profileForm.elements['avatarUrl']) profileForm.elements['avatarUrl'].value = currentUser.avatarUrl || '';
-        }
-    }
-    function initFormInteractions() {
-        if (!profileForm) return;
-        profileForm.addEventListener('input', () => {
-            if (discardBtn) discardBtn.disabled = false;
-        });
-        if (discardBtn) {
-            discardBtn.addEventListener('click', () => {
-                loadUserData();
-                discardBtn.disabled = true;
-            });
-        }
-        if (avatarInput && photoPreview) {
-            avatarInput.addEventListener('input', () => {
-                const url = avatarInput.value.trim();
-                const img = photoPreview.querySelector('img');
-                const span = photoPreview.querySelector('span');
-                if (url && img) {
-                    img.src = url;
-                    img.hidden = false;
-                    if (span) span.hidden = true;
-                } else if (img) {
-                    img.hidden = true;
-                    if (span) span.hidden = false;
-                }
-            });
-        }
-        profileForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            const updatedUser = {
-                ...currentUser,
-                firstName: profileForm.elements['firstName'] ? profileForm.elements['firstName'].value.trim() : '',
-                lastName: profileForm.elements['lastName'] ? profileForm.elements['lastName'].value.trim() : '',
-                birthDate: profileForm.elements['birthDate'] ? profileForm.elements['birthDate'].value : '',
-                phone: profileForm.elements['phone'] ? profileForm.elements['phone'].value.trim() : '',
-                address: profileForm.elements['address'] ? profileForm.elements['address'].value.trim() : '',
-                avatarUrl: profileForm.elements['avatarUrl'] ? profileForm.elements['avatarUrl'].value.trim() : ''
-            };
-            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-            if (discardBtn) discardBtn.disabled = true;
-            loadUserData();
-            renderHeaderAuth();
-            alert('Profile updated successfully!');
-        });
-        if (passwordForm) {
-            passwordForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const currentPass = passwordForm.elements['currentPassword'] ? passwordForm.elements['currentPassword'].value : '';
-                const newPass = passwordForm.elements['newPassword'] ? passwordForm.elements['newPassword'].value : '';
-                const confirmPass = passwordForm.elements['confirmPassword'] ? passwordForm.elements['confirmPassword'].value : '';
-                if (!currentPass || !newPass || !confirmPass) {
-                    alert('Please fill in all password fields.');
-                    return;
-                }
-                if (newPass !== confirmPass) {
-                    alert('New passwords do not match.');
-                    return;
-                }
-                alert('Password updated successfully!');
-                passwordForm.reset();
-            });
-        }
-        document.querySelectorAll('.prf-toggle-eye').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const input = btn.previousElementSibling;
-                if (!input) return;
-                const isPassword = input.type === 'password';
-                input.type = isPassword ? 'text' : 'password';
-                const useTag = btn.querySelector('use');
-                if (useTag) {
-                    useTag.setAttribute('href', isPassword ? '#i-eye-off' : '#i-eye');
-                }
-            });
-        });
-    }
+
     renderHeaderAuth();
     loadCategories();
     initHeaderSearch();
     initMobileMenu();
     initTabNavigation();
-    loadUserData();
-    initFormInteractions();
 });

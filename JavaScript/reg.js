@@ -1,6 +1,23 @@
 const API_KEY = 'ebbee9bb-1884-43ad-ae71-afa71ea9460e';
 const BASE_URL = 'https://shopapi.stepacademy.ge';
 
+function parseApiError(raw) {
+    if (!raw) return 'Registration failed!';
+    if (typeof raw === 'object') {
+        if (raw.detail) return parseApiError(raw.detail);
+        if (raw.message) return parseApiError(raw.message);
+        if (raw.errors) return Object.values(raw.errors).flat().join('\n');
+    }
+    if (typeof raw === 'string' && raw.includes('Validation failed')) {
+        const lines = raw.split('\n')
+            .filter(line => line.includes('--'))
+            .map(line => line.replace(/--\s*Password:\s*/i, '• ').replace(/--\s*/, '• ').replace(/\.?\s*Severity:\s*Error/i, ''))
+            .filter(Boolean);
+        if (lines.length > 0) return 'Please fix the following:\n' + lines.join('\n');
+    }
+    return raw;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const regForm = document.querySelector('.reg-form');
     if (!regForm) return;
@@ -40,11 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetPath = isInHtmlFolder ? './verify.html' : './Html/verify.html';
                 window.location.href = targetPath;
             } else {
-                alert(resData?.detail || resData?.message || 'Registration failed!');
+                alert(parseApiError(resData?.detail || resData?.message || resData || 'Registration failed!'));
             }
         } catch (err) {
             console.error('Registration Error:', err);
-            alert('Network error. Check console for details.');
+            alert('Network error.');
         }
     });
 });

@@ -1,6 +1,15 @@
 const API_KEY = 'ebbee9bb-1884-43ad-ae71-afa71ea9460e';
 const BASE_URL = 'https://shopapi.stepacademy.ge';
 
+function parseApiError(raw) {
+    if (!raw) return 'Invalid credentials!';
+    if (typeof raw === 'object') {
+        if (raw.detail) return parseApiError(raw.detail);
+        if (raw.message) return parseApiError(raw.message);
+    }
+    return raw;
+}
+
 document.querySelector('.signin-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -32,7 +41,7 @@ document.querySelector('.signin-form').addEventListener('submit', async (e) => {
             }
             window.location.href = '../index.html';
         } else {
-            alert(resData?.detail || resData?.message || 'Invalid credentials!');
+            alert(parseApiError(resData?.detail || resData?.message || 'Invalid credentials!'));
         }
     } catch (err) {
         console.error(err);

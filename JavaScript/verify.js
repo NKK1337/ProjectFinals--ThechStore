@@ -15,6 +15,16 @@ function getHeaders() {
     }
     return headers;
 }
+
+function parseApiError(raw) {
+    if (!raw) return 'Verification failed!';
+    if (typeof raw === 'object') {
+        if (raw.detail) return parseApiError(raw.detail);
+        if (raw.message) return parseApiError(raw.message);
+    }
+    return raw;
+}
+
 document.querySelector('.verify-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const code = e.target.querySelector('input[name="code"]').value;
@@ -30,13 +40,14 @@ document.querySelector('.verify-form').addEventListener('submit', async (e) => {
             localStorage.removeItem('pendingEmail');
             window.location.href = './signin.html';
         } else {
-            alert(resData?.detail || resData?.message || 'Invalid code!');
+            alert(parseApiError(resData?.detail || resData?.message || 'Invalid code!'));
         }
     } catch (err) {
         console.error(err);
         alert('Network error. Check console for details.');
     }
 });
+
 document.querySelector('.resend-link').addEventListener('click', async (e) => {
     e.preventDefault();
     if (!email) return alert('No email found to resend verification.');
@@ -47,12 +58,12 @@ document.querySelector('.resend-link').addEventListener('click', async (e) => {
         });
         const resData = await response.json().catch(() => null);
         if (response.ok) {
-            alert('Verification code sent again!');
+            alert('Verification code sent again');
         } else {
-            alert(resData?.detail || resData?.message || 'Failed to resend code.');
+            alert(parseApiError(resData?.detail || resData?.message || 'Failed to resend code.'));
         }
     } catch (err) {
         console.error(err);
-        alert('Network error. Check console for details.');
+        alert('Network error');
     }
 });

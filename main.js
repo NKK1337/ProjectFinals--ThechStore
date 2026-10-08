@@ -481,3 +481,16 @@ async function loadNewArrivals() {
         console.error('New arrivals fetch error:', err);
     }
 }
+
+document.addEventListener('click', (e) => {
+    const card = e.target.closest('.featured-card, .new-arrival-card');
+    if (!card) return;
+
+    // Do not redirect if user clicks an "Add to Cart" or "Wishlist" button
+    if (e.target.closest('button')) return;
+
+    const productId = card.dataset.productId;
+    if (productId) {
+        window.location.href = `./Html/itempage.html?id=${productId}`;
+    }
+});
